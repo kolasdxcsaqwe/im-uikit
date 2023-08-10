@@ -90,11 +90,13 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:exported="false" />
 
         <activity
             android:name=".login.RegisterActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:exported="false" />
 
         <activity

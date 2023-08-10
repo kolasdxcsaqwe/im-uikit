@@ -17,6 +17,7 @@ import com.netease.yunxin.app.im.BuildConfig;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityWelcomeBinding;
+import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.main.MainActivity;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
@@ -81,13 +82,11 @@ public class WelcomeActivity extends BaseActivity {
     activityWelcomeBinding.vEmailLine.setVisibility(View.VISIBLE);
     activityWelcomeBinding.loginButton.setOnClickListener(
         view -> {
-
-          launchLoginPage();
+          startActivity(new Intent(this, LoginActivity.class));
         });
     activityWelcomeBinding.tvEmailLogin.setOnClickListener(
         view -> {
-
-          launchLoginPage();
+            startActivity(new Intent(this, LoginActivity.class));
         });
     activityWelcomeBinding.tvServerConfig.setOnClickListener(
         view -> {
