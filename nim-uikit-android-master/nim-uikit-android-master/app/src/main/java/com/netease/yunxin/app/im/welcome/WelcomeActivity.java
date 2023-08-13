@@ -8,24 +8,39 @@ package com.netease.yunxin.app.im.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.gson.Gson;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.yunxin.app.im.AppSkinConfig;
+import com.netease.yunxin.app.im.BaseActivity;
 import com.netease.yunxin.app.im.BuildConfig;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
+import com.netease.yunxin.app.im.bean.LoginIMResultBean;
 import com.netease.yunxin.app.im.databinding.ActivityWelcomeBinding;
 import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.main.MainActivity;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
+import com.netease.yunxin.app.im.utils.HttpRequest;
+import com.netease.yunxin.app.im.utils.OkhttpCallBack;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.kit.alog.ALog;
-import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import com.netease.yunxin.kit.corekit.im.login.LoginCallback;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /** Welcome Page is launch page */
 public class WelcomeActivity extends BaseActivity {
@@ -40,11 +55,19 @@ public class WelcomeActivity extends BaseActivity {
     IMApplication.setColdStart(true);
     activityWelcomeBinding = ActivityWelcomeBinding.inflate(getLayoutInflater());
     setContentView(activityWelcomeBinding.getRoot());
-    if (TextUtils.isEmpty(NIMClient.getCurrentAccount())) {
-      startLogin();
-    } else {
-      showMainActivityAndFinish();
-    }
+
+      AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
+      String loginData=SPUtils.getInstance().get(SPUtils.loginData,"");
+      if(!TextUtils.isEmpty(loginData))
+      {
+          LoginIMResultBean loginIMResultBean=new Gson().fromJson(loginData,LoginIMResultBean.class);
+          login(loginIMResultBean);
+      }
+      else
+      {
+          startActivity(new Intent(this,LoginActivity.class));
+          finish();
+      }
   }
 
   private void showMainActivityAndFinish() {
@@ -56,20 +79,6 @@ public class WelcomeActivity extends BaseActivity {
     finish();
   }
 
-  /** start login page, you can use to launch your own login */
-  private void startLogin() {
-    ALog.d(Constant.PROJECT_TAG, TAG, "startLogin");
-
-      //填入你的 account and token
-      String account = "";
-      String token = "";
-
-      if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
-          loginIM(account,token);
-    } else {
-      showLoginView();
-    }
-  }
 
   private void showLoginView() {
     ALog.d(Constant.PROJECT_TAG, TAG, "showLoginView");
@@ -102,11 +111,11 @@ public class WelcomeActivity extends BaseActivity {
   }
 
   /** when your own page login success, you should login IM SDK */
-  private void loginIM(String account, String token) {
+  private void loginIM(LoginIMResultBean loginIMResultBean) {
     ALog.d(Constant.PROJECT_TAG, TAG, "loginIM");
     activityWelcomeBinding.getRoot().setVisibility(View.GONE);
     LoginInfo loginInfo =
-        LoginInfo.LoginInfoBuilder.loginInfoDefault(account, token)
+        LoginInfo.LoginInfoBuilder.loginInfoDefault(loginIMResultBean.getAccid(), loginIMResultBean.getImToken())
             .withAppKey(DataUtils.readAppKey(this))
             .build();
     IMKitClient.loginIM(
@@ -125,4 +134,25 @@ public class WelcomeActivity extends BaseActivity {
           }
         });
   }
+
+    private void login(LoginIMResultBean loginIMResultBean)
+    {
+        RequestBody requestBody= new FormBody.Builder().add("userName",loginIMResultBean.getUsername()).add("loginPwd",loginIMResultBean.getPassword()).build();
+
+        HttpRequest.post(HttpRequest.login, requestBody, new OkhttpCallBack(true,this) {
+            @Override
+            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
+            }
+
+            @Override
+            public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if(response!=null)
+                {
+                    String json=response.body().string();
+                    LoginIMResultBean loginIMResultBean=new Gson().fromJson(json,LoginIMResultBean.class);
+                    loginIM(loginIMResultBean);
+                }
+            }
+        });
+    }
 }

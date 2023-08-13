@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.yunxin.app.im.BaseActivity;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.bean.LoginIMResultBean;
 import com.netease.yunxin.app.im.databinding.ActivityRegisterBinding;
@@ -19,6 +20,8 @@ import com.netease.yunxin.app.im.main.MainActivity;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.HttpRequest;
+import com.netease.yunxin.app.im.utils.OkhttpCallBack;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
@@ -32,7 +35,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class RegisterActivity extends FragmentActivity {
+public class RegisterActivity extends BaseActivity {
 
     ActivityRegisterBinding arb;
 
@@ -67,6 +70,7 @@ public class RegisterActivity extends FragmentActivity {
             }
         });
 
+
     }
 
 
@@ -74,28 +78,29 @@ public class RegisterActivity extends FragmentActivity {
     {
         RequestBody requestBody= new FormBody.Builder().add("userName",userName).add("loginPwd",password).build();
 
-        HttpRequest.post(HttpRequest.register, requestBody, new Callback() {
+        HttpRequest.post(HttpRequest.register, requestBody, new OkhttpCallBack(true,this) {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
+            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if(response!=null)
                 {
                     String json=response.body().string();
                     LoginIMResultBean loginIMResultBean=new Gson().fromJson(json,LoginIMResultBean.class);
-                    loginIM(loginIMResultBean.getAccid(),loginIMResultBean.getImToken());
+                    loginIMResultBean.setPassword(password);
+                    loginIMResultBean.setUsername(userName);
+                    loginIM(loginIMResultBean);
                 }
             }
         });
     }
 
 
-    private void loginIM(String account, String token) {
+    private void loginIM(LoginIMResultBean loginIMResultBean) {
         LoginInfo loginInfo =
-                LoginInfo.LoginInfoBuilder.loginInfoDefault(account, token)
+                LoginInfo.LoginInfoBuilder.loginInfoDefault(loginIMResultBean.getAccid(), loginIMResultBean.getImToken())
                         .withAppKey(DataUtils.readAppKey(this))
                         .build();
         IMKitClient.loginIM(
@@ -109,6 +114,7 @@ public class RegisterActivity extends FragmentActivity {
 
                     @Override
                     public void onSuccess(@Nullable LoginInfo data) {
+                        SPUtils.getInstance().save(SPUtils.loginData,new Gson().toJson(loginIMResultBean));
                         showMainActivityAndFinish();
                     }
                 });
