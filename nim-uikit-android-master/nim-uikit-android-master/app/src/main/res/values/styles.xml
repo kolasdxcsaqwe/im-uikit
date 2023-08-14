@@ -9,4 +9,9 @@
     <style name="AppSelectorRadioBtn" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:button">@drawable/app_radio_blue_selector</item>
     </style>
+
+    <style name="BasedialogAnim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/qt_dialog_push_in</item>
+        <item name="android:windowExitAnimation">@anim/qt_dialog_push_out</item>
+    </style>
 </resources>
