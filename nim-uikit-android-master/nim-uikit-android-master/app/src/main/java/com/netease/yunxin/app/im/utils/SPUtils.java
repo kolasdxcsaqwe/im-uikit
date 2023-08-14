@@ -1,297 +1,73 @@
 package com.netease.yunxin.app.im.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class SPUtils {
 
+    static final String tag="SPUtils";
+    static SPUtils spUtils;
 
-    private static final String preferencesName = "preferences";
-    private static final String LENGTH = "_length";
-    private static final String DEFAULT_STRING_VALUE = "";
-    private static final int DEFAULT_INT_VALUE = -1;
-    private static final double DEFAULT_DOUBLE_VALUE = -1d;
-    private static final float DEFAULT_FLOAT_VALUE = -1f;
-    private static final long DEFAULT_LONG_VALUE = -1L;
-    private static final boolean DEFAULT_BOOLEAN_VALUE = false;
-    private static SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPref =null;
 
-    private static SharedPreferences getSharedPreferences() {
-        if (sharedPreferences == null) {
-            sharedPreferences = getContext().getSharedPreferences(
-                    preferencesName,
-                    Context.MODE_PRIVATE
-            );
+    public static final String loginData="loginData";
+
+    public static SPUtils getInstance() {
+        if(spUtils==null)
+        {
+            spUtils=new SPUtils();
         }
-        return sharedPreferences;
+
+        return spUtils;
     }
 
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public static String getString(String what) {
-        return getSharedPreferences().getString(what, DEFAULT_STRING_VALUE);
+    public static void init(Context context)
+    {
+        sharedPref = context.getSharedPreferences(
+                tag, Context.MODE_PRIVATE);
     }
 
-    /**
-     * @param what
-     * @param defaultString
-     * @return Returns the stored value of 'what'
-     */
-    public static String getString(String what, String defaultString) {
-        return getSharedPreferences().getString(what, defaultString);
+    public void saveNow(String key,String string)
+    {
+        if(sharedPref==null)return;
+        sharedPref.edit().putString(key,string).commit();
     }
 
-    /**
-     * @param where
-     * @param what
-     */
-    public static void putString(String where, String what) {
-        getSharedPreferences().edit().putString(where, what).apply();
+    public void save(String key,String string)
+    {
+        sharedPref.edit().putString(key,string).apply();
     }
 
-    // int related methods
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public static int getInt(String what) {
-        return getSharedPreferences().getInt(what, DEFAULT_INT_VALUE);
+    public void remove(String key)
+    {
+        sharedPref.edit().remove(key).apply();
     }
 
-    /**
-     * @param what
-     * @param defaultInt
-     * @return Returns the stored value of 'what'
-     */
-    public static int getInt(String what, int defaultInt) {
-        return getSharedPreferences().getInt(what, defaultInt);
-    }
+    public <T> T get(String tag,T value)
+    {
+        if(sharedPref==null)return null;
 
-    /**
-     * @param where
-     * @param what
-     */
-    public static void putInt(String where, int what) {
-        getSharedPreferences().edit().putInt(where, what).apply();
-    }
-
-    // double related methods
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public static double getDouble(String what) {
-        if (!contains(what))
-            return DEFAULT_DOUBLE_VALUE;
-        return Double.longBitsToDouble(getLong(what));
-    }
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public static long getLong(String what) {
-        return getSharedPreferences().getLong(what, DEFAULT_LONG_VALUE);
-    }
-
-    /**
-     * @param what
-     * @param defaultLong
-     * @return Returns the stored value of 'what'
-     */
-    public static long getLong(String what, long defaultLong) {
-        return getSharedPreferences().getLong(what, defaultLong);
-    }
-
-    // float related methods
-
-    /**
-     * @param where
-     * @param what
-     */
-    public static void putLong(String where, long what) {
-        getSharedPreferences().edit().putLong(where, what).apply();
-    }
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public static boolean getBoolean(String what) {
-        return getSharedPreferences().getBoolean(what, DEFAULT_BOOLEAN_VALUE);
-    }
-
-    /**
-     * @param what
-     * @param defaultBoolean
-     * @return Returns the stored value of 'what'
-     */
-    public static boolean getBoolean(String what, boolean defaultBoolean) {
-        return getSharedPreferences().getBoolean(what, defaultBoolean);
-    }
-
-    // long related methods
-
-    /**
-     * @param where
-     * @param what
-     */
-    public static void putBoolean(String where, boolean what) {
-        getSharedPreferences().edit().putBoolean(where, what).apply();
-    }
-
-    /**
-     * @param key
-     * @param value
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static void putStringSet(final String key, final Set<String> value) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getSharedPreferences().edit().putStringSet(key, value).apply();
-        } else {
-            // Workaround for pre-HC's lack of StringSets
-            putOrderedStringSet(key, value);
+        if(value instanceof String)
+        {
+            return (T)(sharedPref.getString(tag, String.valueOf(value)));
         }
-    }
-
-    /**
-     * @param key
-     * @param value
-     */
-    public static void putOrderedStringSet(String key, Set<String> value) {
-        int stringSetLength = 0;
-        if (getSharedPreferences().contains(key + LENGTH)) {
-            // First getString what the value was
-            stringSetLength = getInt(key + LENGTH);
+        if(value instanceof Long)
+        {
+            return (T) (Long.valueOf(sharedPref.getLong(tag, (Long)value)));
         }
-        putInt(key + LENGTH, value.size());
-        int i = 0;
-        for (String aValue : value) {
-            putString(key + "[" + i + "]", aValue);
-            i++;
+        if(value instanceof Integer)
+        {
+            return (T)(Integer.valueOf(sharedPref.getInt(tag, (Integer)value)));
         }
-        for (; i < stringSetLength; i++) {
-            // Remove any remaining values
-            remove(key + "[" + i + "]");
+        if(value instanceof Boolean)
+        {
+            return (T)(Boolean.valueOf(sharedPref.getBoolean(tag, (Boolean)value)));
         }
-    }
-
-    // boolean related methods
-
-    /**
-     * @param key
-     */
-    public static void remove(final String key) {
-        if (contains(key + LENGTH)) {
-            // Workaround for pre-HC's lack of StringSets
-            int stringSetLength = getInt(key + LENGTH);
-            if (stringSetLength >= 0) {
-                getSharedPreferences().edit().remove(key + LENGTH).apply();
-                for (int i = 0; i < stringSetLength; i++) {
-                    getSharedPreferences().edit().remove(key + "[" + i + "]").apply();
-                }
-            }
+        if(value instanceof Float)
+        {
+            return (T)(Float.valueOf(sharedPref.getFloat(tag, (Float)value)));
         }
-        getSharedPreferences().edit().remove(key).apply();
+
+        return null;
     }
-
-    /**
-     * @param key
-     * @return Returns if that key exists
-     */
-    public static boolean contains(final String key) {
-        return getSharedPreferences().contains(key);
-    }
-
-    /**
-     * Clear all the preferences
-     */
-    public static void clear() {
-        getSharedPreferences().edit().clear().apply();
-    }
-
-    // String set methods
-
-    /**
-     * @param what
-     * @param defaultDouble
-     * @return Returns the stored value of 'what'
-     */
-    public double getDouble(String what, double defaultDouble) {
-        if (!contains(what))
-            return defaultDouble;
-        return Double.longBitsToDouble(getLong(what));
-    }
-
-    /**
-     * @param where
-     * @param what
-     */
-    public void putDouble(String where, double what) {
-        putLong(where, Double.doubleToRawLongBits(what));
-    }
-
-    /**
-     * @param what
-     * @return Returns the stored value of 'what'
-     */
-    public float getFloat(String what) {
-        return getSharedPreferences().getFloat(what, DEFAULT_FLOAT_VALUE);
-    }
-
-    /**
-     * @param what
-     * @param defaultFloat
-     * @return Returns the stored value of 'what'
-     */
-    public float getFloat(String what, float defaultFloat) {
-        return getSharedPreferences().getFloat(what, defaultFloat);
-    }
-
-    // end related methods
-
-    /**
-     * @param where
-     * @param what
-     */
-    public void putFloat(String where, float what) {
-        getSharedPreferences().edit().putFloat(where, what).apply();
-    }
-
-    /**
-     * @param key
-     * @param defValue
-     * @return Returns the String Set with HoneyComb compatibility
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Set<String> getStringSet(final String key, final Set<String> defValue) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            return getSharedPreferences().getStringSet(key, defValue);
-        } else {
-            // Workaround for pre-HC's missing getStringSet
-            return getOrderedStringSet(key, defValue);
-        }
-    }
-
-    /**
-     * @param key
-     * @param defValue
-     * @return Returns the ordered String Set
-     */
-    public Set<String> getOrderedStringSet(String key, final Set<String> defValue) {
-        if (contains(key + LENGTH)) {
-            LinkedHashSet<String> set = new LinkedHashSet<>();
-            int stringSetLength = getInt(key + LENGTH);
-            if (stringSetLength >= 0) {
-                for (int i = 0; i < stringSetLength; i++) {
-                    set.add(getString(key + "[" + i + "]"));
-                }
-            }
-            return set;
-        }
-        return defValue;
-    }
-
 }

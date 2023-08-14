@@ -16,11 +16,20 @@ import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMineSettingBinding;
+import com.netease.yunxin.app.im.utils.HttpRequest;
+import com.netease.yunxin.app.im.utils.OkhttpCallBack;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.chatkit.ui.custom.ChatConfigManager;
 import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.Response;
 
 public class SettingActivity extends BaseActivity {
 
@@ -70,28 +79,9 @@ public class SettingActivity extends BaseActivity {
         v ->{
             // logout your own account here
             //...
-                    IMKitClient.logoutIM(
-                        new com.netease.yunxin.kit.corekit.im.login.LoginCallback<Void>() {
-                          @Override
-                          public void onError(int errorCode, @NonNull String errorMsg) {
-                            Toast.makeText(
-                                    SettingActivity.this,
-                                    "error code is " + errorCode + ", message is " + errorMsg,
-                                    Toast.LENGTH_SHORT)
-                                .show();
-                          }
-
-                          @Override
-                          public void onSuccess(@Nullable Void data) {
-                            if (getApplicationContext() instanceof IMApplication) {
-                              ((IMApplication) getApplicationContext())
-                                  .clearActivity(SettingActivity.this);
-                            }
-                            startActivity(new Intent(SettingActivity.this, WelcomeActivity.class));
-                            finish();
-                          }
-                        });
+            logout();
         });
+
 
     viewBinding.settingTitleBar.setOnBackIconClickListener(v -> onBackPressed());
     if (AppSkinConfig.getInstance().getAppSkinStyle() == AppSkinConfig.AppSkin.commonSkin) {
@@ -119,6 +109,47 @@ public class SettingActivity extends BaseActivity {
           R.drawable.fun_setting_bg_switch_thumb_selector,
           R.drawable.fun_setting_bg_switch_track_selector);
     }
+  }
+
+  private void logout()
+  {
+      HttpRequest.post(HttpRequest.logout, new FormBody.Builder().build(), new OkhttpCallBack(true,this) {
+          @Override
+          public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
+
+          }
+
+          @Override
+          public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if(response.isSuccessful())
+                    {
+                        SPUtils.getInstance().remove(SPUtils.loginData);
+                        IMKitClient.logoutIM(
+                                new com.netease.yunxin.kit.corekit.im.login.LoginCallback<Void>() {
+                                    @Override
+                                    public void onError(int errorCode, @NonNull String errorMsg) {
+                                        Toast.makeText(
+                                                        SettingActivity.this,
+                                                        "error code is " + errorCode + ", message is " + errorMsg,
+                                                        Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+
+                                    @Override
+                                    public void onSuccess(@Nullable Void data) {
+                                        if (getApplicationContext() instanceof IMApplication) {
+                                            ((IMApplication) getApplicationContext())
+                                                    .clearActivity(SettingActivity.this);
+                                        }
+                                        startActivity(new Intent(SettingActivity.this, WelcomeActivity.class));
+                                        finish();
+                                    }
+                                });
+                    }
+          }
+      });
+
+
   }
 
   @Override

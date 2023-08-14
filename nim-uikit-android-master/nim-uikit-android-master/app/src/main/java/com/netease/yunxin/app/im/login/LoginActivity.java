@@ -4,6 +4,10 @@ import static javax.xml.transform.OutputKeys.MEDIA_TYPE;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -13,14 +17,17 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.yunxin.app.im.BaseActivity;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.bean.LoginIMResultBean;
 import com.netease.yunxin.app.im.databinding.ActivityLoginBinding;
 import com.netease.yunxin.app.im.databinding.ActivityRegisterBinding;
+import com.netease.yunxin.app.im.dialog.LoadingDialog;
 import com.netease.yunxin.app.im.main.MainActivity;
 import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.HttpRequest;
-import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
+import com.netease.yunxin.app.im.utils.OkhttpCallBack;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import com.netease.yunxin.kit.corekit.im.login.LoginCallback;
@@ -29,6 +36,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,15 +47,18 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends BaseActivity {
 
     ActivityLoginBinding alb;
+    long currentTime=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alb= ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(alb.getRoot());
+
+
         alb.tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +85,11 @@ public class LoginActivity extends FragmentActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentTime=0;
+    }
 
     private void login()
     {
@@ -89,29 +105,29 @@ public class LoginActivity extends FragmentActivity {
     {
         RequestBody requestBody= new FormBody.Builder().add("userName",userName).add("loginPwd",password).build();
 
-        HttpRequest.post(HttpRequest.login, requestBody, new Callback() {
+        HttpRequest.post(HttpRequest.login, requestBody, new OkhttpCallBack(true,this) {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
+            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if(response!=null)
                 {
                     String json=response.body().string();
-                    Log.e("login",json);
                     LoginIMResultBean loginIMResultBean=new Gson().fromJson(json,LoginIMResultBean.class);
-                    loginIM(loginIMResultBean.getAccid(),loginIMResultBean.getImToken());
+                    loginIMResultBean.setPassword(password);
+                    loginIMResultBean.setUsername(userName);
+                    loginIM(loginIMResultBean);
                 }
             }
         });
     }
 
 
-    private void loginIM(String account, String token) {
+    private void loginIM(LoginIMResultBean bean) {
         LoginInfo loginInfo =
-                LoginInfo.LoginInfoBuilder.loginInfoDefault(account, token)
+                LoginInfo.LoginInfoBuilder.loginInfoDefault(bean.getAccid(), bean.getImToken())
                         .withAppKey(DataUtils.readAppKey(this))
                         .build();
         IMKitClient.loginIM(
@@ -125,6 +141,7 @@ public class LoginActivity extends FragmentActivity {
 
                     @Override
                     public void onSuccess(@Nullable LoginInfo data) {
+                        SPUtils.getInstance().save(SPUtils.loginData,new Gson().toJson(bean));
                         showMainActivityAndFinish();
                     }
                 });
@@ -136,5 +153,22 @@ public class LoginActivity extends FragmentActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         this.startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+       if(System.currentTimeMillis()-currentTime<2000)
+       {
+           super.onBackPressed();
+       }
+       else
+       {
+           ToastX.showShortToast("再按一次退出");
+           currentTime=System.currentTimeMillis();
+       }
+
+
+
     }
 }

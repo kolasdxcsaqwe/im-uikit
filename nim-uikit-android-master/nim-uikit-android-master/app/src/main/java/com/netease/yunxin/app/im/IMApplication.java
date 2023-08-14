@@ -18,6 +18,7 @@ import com.netease.yunxin.app.im.main.mine.MineInfoActivity;
 import com.netease.yunxin.app.im.push.PushMessageHandler;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
@@ -47,6 +48,7 @@ public class IMApplication extends MultiDexApplication {
     registerActivityLifeCycle();
     AppCrashHandler.getInstance().initCrashHandler(this);
     Thread.setDefaultUncaughtExceptionHandler(AppCrashHandler.getInstance());
+    SPUtils.init(this);
 
     initUIKit();
     // temp register for mine

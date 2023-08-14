@@ -10,6 +10,9 @@ pluginManagement {
         google()
         mavenCentral()
         maven {
+            setUrl("https://www.jitpack.io")
+        }
+        maven {
             setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
         }
         maven {
@@ -23,6 +26,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            setUrl("https://www.jitpack.io")
+        }
         maven {
             setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
         }

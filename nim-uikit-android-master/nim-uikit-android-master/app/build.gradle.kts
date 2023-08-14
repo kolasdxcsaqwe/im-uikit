@@ -40,6 +40,8 @@ android {
         jniLibs.pickFirsts.add("lib/arm64-v8a/libc++_shared.so")
         jniLibs.pickFirsts.add("lib/armeabi-v7a/libc++_shared.so")
     }
+
+
 }
 
 dependencies {
@@ -76,5 +78,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("commons-codec:commons-codec:1.10")
     implementation("androidx.annotation:annotation:1.3.0")
+
+    api("com.github.ybq:Android-SpinKit:1.4.0")
 
 }

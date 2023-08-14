@@ -58,7 +58,7 @@
         android:theme="@style/Theme.Xkit">
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="86cc544a7c3c0e3f4c2b1e66ee142274" />
+            android:value="9aa7f68cac9a8a485a294bc2c5ff3b3b" />
         <meta-data
             android:name="com.netease.nim.oversea.appKey"
             android:value="your appKey" />
@@ -68,6 +68,7 @@
 
         <activity android:name=".welcome.WelcomeActivity"
             android:screenOrientation="portrait"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

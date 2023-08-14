@@ -10,8 +10,13 @@
         <item name="android:button">@drawable/app_radio_blue_selector</item>
     </style>
 
-    <style name="BasedialogAnim" mce_bogus="1" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/qt_dialog_push_in</item>
-        <item name="android:windowExitAnimation">@anim/qt_dialog_push_out</item>
+    <style name="loadingDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>
