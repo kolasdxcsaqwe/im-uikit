@@ -91,6 +91,40 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layout_add_friend_input"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dip"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dip"
+            android:textSize="15sp"
+            android:textColor="@color/color_black"
+            android:text="我的账号"
+            android:drawableRight="@color/color_black"
+            />
+
+        <ImageView
+            android:id="@+id/ivQrcode"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:src="@mipmap/fun_ic_contact_black_list"
+            />
+
+    </LinearLayout>
+
     <LinearLayout android:id="@+id/add_friend_empty_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"

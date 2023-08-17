@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** pop menu factory */
-public final class FunPopItemFactory {
+public final class FunPopItemFactory { 
   private static final String TAG = "PopItemFactory";
 
   public static ContentListPopView.Item getAddFriendItem(Context context) {

@@ -35,9 +35,9 @@
             android:textSize="15sp"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
-            android:paddingBottom="7dip"
+            android:paddingBottom="10dip"
             android:hint="请设置用户名"
-            android:paddingTop="7dip"/>
+            android:paddingTop="10dip"/>
 
         <View
             android:layout_width="match_parent"
@@ -52,9 +52,9 @@
             android:textSize="15sp"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
-            android:paddingBottom="7dip"
+            android:paddingBottom="10dip"
             android:hint="请设置密码"
-            android:paddingTop="7dip"/>
+            android:paddingTop="10dip"/>
 
     </LinearLayout>
 
@@ -68,7 +68,7 @@
         android:gravity="center"
         android:text="注册"
         android:textSize="14sp"
-        android:padding="7dip"
+        android:padding="10dip"
         android:textColor="@color/white"
         android:background="@drawable/bg_blue_round"/>
 
@@ -82,8 +82,38 @@
         android:layout_marginRight="15dip"
         android:layout_marginTop="15dip"
         android:gravity="center"
-        android:padding="7dip"
+        android:padding="10dip"
         android:hint="已有账号，去登录"
         android:paddingTop="7dip"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dip"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="注册即代表你同意"
+                android:textColor="@color/color_gray_alpha40"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="&lt;&lt;隐私条例和服务条款&gt;&gt;"
+                android:textColor="#f7389fff"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

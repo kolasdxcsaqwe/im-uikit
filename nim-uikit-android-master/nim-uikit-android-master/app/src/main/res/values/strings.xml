@@ -88,5 +88,9 @@
     <!--    skin-->
     <string name="base_type">基础皮肤</string>
     <string name="common_skin">通用皮肤</string>
+    <string name="turn_off_flashlight">请关闭手电筒</string>
+    <string name="turn_on_flashlight">请打开手电筒</string>
+    <string name="my_qrcode">我的二维码</string>
+
 
 </resources>

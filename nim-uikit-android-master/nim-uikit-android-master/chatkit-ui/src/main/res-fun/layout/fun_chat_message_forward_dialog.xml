@@ -15,6 +15,7 @@
         android:id="@+id/teamTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:paddingVertical="@dimen/dimen_12_dp"
         android:text="@string/chat_message_forward_to_team"
@@ -24,6 +25,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_1_dp"
+        android:visibility="gone"
         android:background="@color/color_f5f8fc" />
 
     <TextView

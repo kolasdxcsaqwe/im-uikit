@@ -171,15 +171,15 @@ public class FunContactFragment extends BaseContactFragment {
     blackBean.router = RouterConstant.PATH_FUN_MY_BLACK_PAGE;
     blackBean.showRightArrow = false;
     //my group
-    ContactEntranceBean groupBean =
-        new ContactEntranceBean(
-            R.mipmap.fun_ic_contact_my_group, context.getString(R.string.contact_list_my_group));
-    groupBean.router = RouterConstant.PATH_FUN_MY_TEAM_PAGE;
-    groupBean.showRightArrow = false;
+//    ContactEntranceBean groupBean =
+//        new ContactEntranceBean(
+//            R.mipmap.fun_ic_contact_my_group, context.getString(R.string.contact_list_my_group));
+//    groupBean.router = RouterConstant.PATH_FUN_MY_TEAM_PAGE;
+//    groupBean.showRightArrow = false;
 
     contactDataList.add(verifyBean);
     contactDataList.add(blackBean);
-    contactDataList.add(groupBean);
+//    contactDataList.add(groupBean);
     return contactDataList;
   }
 

@@ -3,6 +3,7 @@ package com.netease.yunxin.app.im.login;
 import static javax.xml.transform.OutputKeys.MEDIA_TYPE;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -58,7 +59,11 @@ public class LoginActivity extends BaseActivity {
         alb= ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(alb.getRoot());
 
-
+        try {
+            alb.version.setText(getString(R.string.mine_version)+":"+getPackageManager().getPackageInfo(getPackageName(),0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         alb.tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -87,6 +87,7 @@
         <FrameLayout
             android:id="@+id/skin_fl"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="@dimen/dimen_46_dp">
 
             <TextView

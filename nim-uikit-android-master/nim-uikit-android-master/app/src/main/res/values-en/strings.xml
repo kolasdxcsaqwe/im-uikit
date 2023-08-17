@@ -89,4 +89,8 @@
     <!--    skin-->
     <string name="base_type">Base Skin</string>
     <string name="common_skin">Common Skin</string>
+
+    <string name="turn_off_flashlight">please turn off flash light</string>
+    <string name="turn_on_flashlight">please turn on flash light</string>
+    <string name="my_qrcode">My QRCode</string>
 </resources>

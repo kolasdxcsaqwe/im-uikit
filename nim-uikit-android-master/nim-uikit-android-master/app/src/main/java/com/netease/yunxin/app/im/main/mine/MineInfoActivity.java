@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -96,6 +97,13 @@ public class MineInfoActivity extends BaseActivity {
         v -> EditUserInfoActivity.launch(getApplicationContext(), Constant.EDIT_PHONE, launcher));
     binding.flSign.setOnClickListener(
         v -> EditUserInfoActivity.launch(getApplicationContext(), Constant.EDIT_SIGN, launcher));
+
+    binding.flQrcode.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(MineInfoActivity.this,MyQrcodeActivity.class));
+        }
+    });
     binding.ivBack.setOnClickListener(v -> finish());
     binding.flBirthday.setOnClickListener(v -> showTimerPicker(userInfo.getBirthday()));
 
