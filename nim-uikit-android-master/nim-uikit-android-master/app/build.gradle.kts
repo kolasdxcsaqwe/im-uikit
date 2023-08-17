@@ -71,9 +71,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.huawei.hms:push:6.3.0.302")
+//    implementation("com.huawei.hms:push:6.3.0.302")
     implementation("com.meizu.flyme.internet:push-internal:4.1.0")
-    implementation("com.huawei.agconnect:agconnect-core:1.6.5.300")
+//    implementation("com.huawei.agconnect:agconnect-core:1.6.5.300")
 
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("commons-codec:commons-codec:1.10")
