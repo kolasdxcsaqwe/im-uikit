@@ -5,7 +5,7 @@
   ~ found in the LICENSE file.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="conversation_title">云信IM</string>
     <string name="add_friend">添加好友</string>
     <string name="create_group_team">创建讨论组</string>
@@ -36,4 +36,5 @@
     <string name="msg_type_tip">[提醒消息]</string>
     <string name="msg_type_custom">[自定义消息]</string>
     <string name="msg_type_no_tips">[未知消息体]</string>
+
 </resources>

@@ -15,7 +15,7 @@ android {
         minSdk = 21
         targetSdk = 30
         versionCode = 1
-        versionName = "9.6.2"
+        versionName = "1.0.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -80,5 +80,6 @@ dependencies {
     implementation("androidx.annotation:annotation:1.3.0")
 
     api("com.github.ybq:Android-SpinKit:1.4.0")
-
+    implementation("com.google.zxing:core:3.3.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

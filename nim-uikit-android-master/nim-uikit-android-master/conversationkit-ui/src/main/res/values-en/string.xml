@@ -4,7 +4,7 @@
   ~ Use of this source code is governed by a MIT license that can be found in the LICENSE file.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="conversation_title">CommsEase IM</string>
     <string name="add_friend">Add Contacts</string> 
     <string name="create_group_team">Create Temp Group</string>
@@ -35,4 +35,5 @@
     <string name="msg_type_tip">[Tip Message]</string>
     <string name="msg_type_custom">[Custom Message]</string>
     <string name="msg_type_no_tips">[Unknown Message]</string>
+
 </resources>

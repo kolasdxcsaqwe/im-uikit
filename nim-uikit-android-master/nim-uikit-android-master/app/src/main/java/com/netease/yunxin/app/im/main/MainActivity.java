@@ -315,11 +315,7 @@ public class MainActivity extends BaseActivity {
     },true);
   }
 
-  private void loadConfig() {
-    CustomConfig.configContactKit(this);
-    CustomConfig.configConversation(this);
-    CustomConfig.configChatKit(this);
-  }
+
 
   //皮肤变更事件
   public static class SkinEvent extends BaseEvent {

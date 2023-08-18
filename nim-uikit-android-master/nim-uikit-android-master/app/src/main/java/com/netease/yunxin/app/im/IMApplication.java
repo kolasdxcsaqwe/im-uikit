@@ -26,7 +26,6 @@ import com.netease.yunxin.kit.corekit.im.repo.SettingRepo;
 import com.netease.yunxin.kit.corekit.im.utils.IMKitUtils;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
-//import com.netease.yunxin.kit.locationkit.LocationKitClient;
 import com.vivo.push.PushClient;
 import com.vivo.push.util.VivoPushException;
 import java.util.ArrayList;
@@ -75,8 +74,17 @@ public class IMApplication extends MultiDexApplication {
       }
       IMKitClient.toggleNotification(SettingRepo.isPushNotify());
       IMKitClient.registerMixPushMessageHandler(new PushMessageHandler());
+
+      loadConfig();
     }
   }
+
+
+    private void loadConfig() {
+        CustomConfig.configContactKit(this);
+        CustomConfig.configConversation(this);
+        CustomConfig.configChatKit(this);
+    }
 
   private final List<Activity> activities = new ArrayList<>();
 

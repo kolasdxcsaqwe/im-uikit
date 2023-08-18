@@ -21,6 +21,6 @@
     <dimen name="dimen_187_dp">187dp</dimen>
     <dimen name="dimen_188_dp">188dp</dimen>
     <dimen name="dimen_315_dp">315dp</dimen>
-
+    <dimen name="pop_margin_right">-105dp</dimen>
     <dimen name="text_size_24">24sp</dimen>
 </resources>

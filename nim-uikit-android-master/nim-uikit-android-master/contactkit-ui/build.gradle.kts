@@ -48,5 +48,9 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0") 
     implementation("androidx.recyclerview:recyclerview:1.2.1") 
     implementation("com.github.bumptech.glide:glide:4.13.1")
+    implementation("com.google.zxing:core:3.3.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.code.gson:gson:2.9.0")
+
 }
 
