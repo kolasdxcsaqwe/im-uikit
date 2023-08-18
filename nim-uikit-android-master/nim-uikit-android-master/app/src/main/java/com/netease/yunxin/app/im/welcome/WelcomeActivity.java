@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -42,114 +43,116 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/** Welcome Page is launch page */
+/**
+ * Welcome Page is launch page
+ */
 public class WelcomeActivity extends BaseActivity {
 
-  private static final String TAG = "WelcomeActivity";
-  private ActivityWelcomeBinding activityWelcomeBinding;
+    private static final String TAG = "WelcomeActivity";
+    private ActivityWelcomeBinding activityWelcomeBinding;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ALog.d(Constant.PROJECT_TAG, TAG, "onCreateView");
-    IMApplication.setColdStart(true);
-    activityWelcomeBinding = ActivityWelcomeBinding.inflate(getLayoutInflater());
-    setContentView(activityWelcomeBinding.getRoot());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ALog.d(Constant.PROJECT_TAG, TAG, "onCreateView");
+        IMApplication.setColdStart(true);
+        activityWelcomeBinding = ActivityWelcomeBinding.inflate(getLayoutInflater());
+        setContentView(activityWelcomeBinding.getRoot());
 
-      AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
-      String loginData=SPUtils.getInstance().get(SPUtils.loginData,"");
-      if(!TextUtils.isEmpty(loginData))
-      {
-          LoginIMResultBean loginIMResultBean=new Gson().fromJson(loginData,LoginIMResultBean.class);
-          login(loginIMResultBean);
-      }
-      else
-      {
-          startActivity(new Intent(this,LoginActivity.class));
-          finish();
-      }
-  }
-
-  private void showMainActivityAndFinish() {
-    ALog.d(Constant.PROJECT_TAG, TAG, "showMainActivityAndFinish");
-    Intent intent = new Intent();
-    intent.setClass(this, MainActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    this.startActivity(intent);
-    finish();
-  }
-
-
-  private void showLoginView() {
-    ALog.d(Constant.PROJECT_TAG, TAG, "showLoginView");
-    activityWelcomeBinding.appDesc.setVisibility(View.GONE);
-    activityWelcomeBinding.loginButton.setVisibility(View.VISIBLE);
-    activityWelcomeBinding.appBottomIcon.setVisibility(View.GONE);
-    activityWelcomeBinding.appBottomName.setVisibility(View.GONE);
-    activityWelcomeBinding.tvEmailLogin.setVisibility(View.VISIBLE);
-    activityWelcomeBinding.tvServerConfig.setVisibility(View.VISIBLE);
-    activityWelcomeBinding.vEmailLine.setVisibility(View.VISIBLE);
-    activityWelcomeBinding.loginButton.setOnClickListener(
-        view -> {
-          startActivity(new Intent(this, LoginActivity.class));
-        });
-    activityWelcomeBinding.tvEmailLogin.setOnClickListener(
-        view -> {
+        AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
+        String loginData = SPUtils.getInstance().get(SPUtils.loginData, "");
+        if (!TextUtils.isEmpty(loginData)) {
+            LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
+            login(loginIMResultBean);
+        } else {
             startActivity(new Intent(this, LoginActivity.class));
-        });
-    activityWelcomeBinding.tvServerConfig.setOnClickListener(
-        view -> {
-          Intent intent = new Intent(WelcomeActivity.this, ServerActivity.class);
-          startActivity(intent);
-        });
-  }
+            finish();
+        }
+    }
 
-  /** launch login activity */
-  private void launchLoginPage() {
-    ALog.d(Constant.PROJECT_TAG, TAG, "launchLoginPage");
+    private void showMainActivityAndFinish() {
+        ALog.d(Constant.PROJECT_TAG, TAG, "showMainActivityAndFinish");
+        Intent intent = new Intent();
+        intent.setClass(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        this.startActivity(intent);
+        finish();
+    }
 
-  }
 
-  /** when your own page login success, you should login IM SDK */
-  private void loginIM(LoginIMResultBean loginIMResultBean) {
-    ALog.d(Constant.PROJECT_TAG, TAG, "loginIM");
-    activityWelcomeBinding.getRoot().setVisibility(View.GONE);
-    LoginInfo loginInfo =
-        LoginInfo.LoginInfoBuilder.loginInfoDefault(loginIMResultBean.getAccid(), loginIMResultBean.getImToken())
-            .withAppKey(DataUtils.readAppKey(this))
-            .build();
-    IMKitClient.loginIM(
-        loginInfo,
-        new LoginCallback<LoginInfo>() {
-          @Override
-          public void onError(int errorCode, @NonNull String errorMsg) {
-            ToastX.showShortToast(
-                String.format(getResources().getString(R.string.login_fail), errorCode));
-            launchLoginPage();
-          }
+    private void showLoginView() {
+        ALog.d(Constant.PROJECT_TAG, TAG, "showLoginView");
+        activityWelcomeBinding.appDesc.setVisibility(View.GONE);
+        activityWelcomeBinding.loginButton.setVisibility(View.VISIBLE);
+        activityWelcomeBinding.appBottomIcon.setVisibility(View.GONE);
+        activityWelcomeBinding.appBottomName.setVisibility(View.GONE);
+        activityWelcomeBinding.tvEmailLogin.setVisibility(View.VISIBLE);
+        activityWelcomeBinding.tvServerConfig.setVisibility(View.VISIBLE);
+        activityWelcomeBinding.vEmailLine.setVisibility(View.VISIBLE);
+        activityWelcomeBinding.loginButton.setOnClickListener(
+                view -> {
+                    startActivity(new Intent(this, LoginActivity.class));
+                });
+        activityWelcomeBinding.tvEmailLogin.setOnClickListener(
+                view -> {
+                    startActivity(new Intent(this, LoginActivity.class));
+                });
+        activityWelcomeBinding.tvServerConfig.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent(WelcomeActivity.this, ServerActivity.class);
+                    startActivity(intent);
+                });
+    }
 
-          @Override
-          public void onSuccess(@Nullable LoginInfo data) {
-            showMainActivityAndFinish();
-          }
-        });
-  }
+    /**
+     * launch login activity
+     */
+    private void launchLoginPage() {
+        ALog.d(Constant.PROJECT_TAG, TAG, "launchLoginPage");
 
-    private void login(LoginIMResultBean loginIMResultBean)
-    {
-        RequestBody requestBody= new FormBody.Builder().add("userName",loginIMResultBean.getUsername()).add("loginPwd",loginIMResultBean.getPassword()).build();
+    }
 
-        HttpRequest.post(HttpRequest.login, requestBody, new OkhttpCallBack(true,this) {
+    /**
+     * when your own page login success, you should login IM SDK
+     */
+    private void loginIM(LoginIMResultBean loginIMResultBean) {
+        ALog.d(Constant.PROJECT_TAG, TAG, "loginIM");
+        activityWelcomeBinding.getRoot().setVisibility(View.GONE);
+        LoginInfo loginInfo =
+                LoginInfo.LoginInfoBuilder.loginInfoDefault(loginIMResultBean.getAccid(), loginIMResultBean.getImToken())
+                        .withAppKey(DataUtils.readAppKey(this))
+                        .build();
+        IMKitClient.loginIM(
+                loginInfo,
+                new LoginCallback<LoginInfo>() {
+                    @Override
+                    public void onError(int errorCode, @NonNull String errorMsg) {
+                        ToastX.showShortToast(
+                                String.format(getResources().getString(R.string.login_fail), errorCode));
+                        startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onSuccess(@Nullable LoginInfo data) {
+                        showMainActivityAndFinish();
+                    }
+                });
+    }
+
+    private void login(LoginIMResultBean loginIMResultBean) {
+        RequestBody requestBody = new FormBody.Builder().add("userName", loginIMResultBean.getUsername()).add("loginPwd", loginIMResultBean.getPassword()).build();
+
+        HttpRequest.post(HttpRequest.login, requestBody, new OkhttpCallBack(true, this) {
             @Override
             public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
             }
 
             @Override
             public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if(response!=null)
-                {
-                    String json=response.body().string();
-                    LoginIMResultBean loginIMResultBean=new Gson().fromJson(json,LoginIMResultBean.class);
+                if (response != null) {
+                    String json = response.body().string();
+                    LoginIMResultBean loginIMResultBean = new Gson().fromJson(json, LoginIMResultBean.class);
                     loginIM(loginIMResultBean);
                 }
             }

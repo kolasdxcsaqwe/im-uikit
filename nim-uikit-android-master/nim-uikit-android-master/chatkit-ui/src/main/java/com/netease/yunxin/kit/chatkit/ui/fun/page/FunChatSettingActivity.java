@@ -215,7 +215,10 @@ public class FunChatSettingActivity extends BaseActivity {
     binding.searchHistoryLayout.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(FunChatSettingActivity.this,FunChatP2PSearchActivity.class));
+            Intent intent=new Intent(FunChatSettingActivity.this,FunChatP2PSearchActivity.class);
+            intent.putExtra(RouterConstant.CHAT_ID_KRY,accId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     });
   }
