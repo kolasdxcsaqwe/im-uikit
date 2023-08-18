@@ -44,6 +44,13 @@
                 android:value="xkit.startup" />
         </provider>
 
+
+        <activity
+            android:name=".fun.page.FunChatP2PSearchActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            />
+
         <activity
             android:name="com.netease.yunxin.kit.chatkit.ui.normal.page.ChatP2PActivity"
             android:screenOrientation="portrait"

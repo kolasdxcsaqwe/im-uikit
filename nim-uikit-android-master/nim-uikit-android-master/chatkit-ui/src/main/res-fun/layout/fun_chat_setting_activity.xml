@@ -53,6 +53,7 @@
             android:id="@+id/addIv"
             android:layout_width="@dimen/dimen_50_dp"
             android:layout_height="@dimen/dimen_50_dp"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/avatarView"
             android:src="@drawable/fun_ic_chat_setting_add"
@@ -151,7 +152,31 @@
                 app:track="@drawable/fun_bg_switch_track_selector" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1_dp"
+            android:background="@color/color_f5f8fc" />
 
+        <RelativeLayout
+            android:id="@+id/searchHistoryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50_dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/chat_history_search"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_12" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_right_arrow"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -209,5 +209,6 @@
     <!-- fun -->
     <string name="chat_input_more_album_title">Album</string>
     <string name="chat_input_audio_record_title">Hold to Talk</string>
+    <string name="chat_history_search">Search Chat History</string>
 
 </resources>

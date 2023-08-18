@@ -51,17 +51,17 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.multidex:multidex:2.0.1")
     //local module code
-//    implementation(project(":contactkit-ui"))
-//    implementation(project(":conversationkit-ui"))
-//    implementation(project(":teamkit-ui"))
-//    implementation(project(":chatkit-ui"))
+    implementation(project(":contactkit-ui"))
+    implementation(project(":conversationkit-ui"))
+    implementation(project(":teamkit-ui"))
+    implementation(project(":chatkit-ui"))
 //    implementation(project(":locationkit"))
 
-    implementation("com.netease.yunxin.kit.contact:contactkit-ui:9.6.2")
-    implementation("com.netease.yunxin.kit.conversation:conversationkit-ui:9.6.2")
-    implementation("com.netease.yunxin.kit.team:teamkit-ui:9.6.2")
-    implementation("com.netease.yunxin.kit.chat:chatkit-ui:9.6.2")
-    implementation("com.netease.yunxin.kit.locationkit:locationkit:9.6.2")
+//    implementation("com.netease.yunxin.kit.contact:contactkit-ui:9.6.2")
+//    implementation("com.netease.yunxin.kit.conversation:conversationkit-ui:9.6.2")
+//    implementation("com.netease.yunxin.kit.team:teamkit-ui:9.6.2")
+//    implementation("com.netease.yunxin.kit.chat:chatkit-ui:9.6.2")
+//    implementation("com.netease.yunxin.kit.locationkit:locationkit:9.6.2")
     implementation("com.netease.yunxin.kit.call:call-ui:1.8.2") //呼叫组件 UI 包
     api("com.netease.nimlib:avsignalling:9.11.0") //呼叫组件 依赖信令包
     api("com.netease.nimlib:basesdk:9.11.0") //IM SDK
@@ -71,9 +71,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-//    implementation("com.huawei.hms:push:6.3.0.302")
+    implementation("com.huawei.hms:push:6.3.0.302")
     implementation("com.meizu.flyme.internet:push-internal:4.1.0")
-//    implementation("com.huawei.agconnect:agconnect-core:1.6.5.300")
+    implementation("com.huawei.agconnect:agconnect-core:1.6.5.300")
 
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("commons-codec:commons-codec:1.10")

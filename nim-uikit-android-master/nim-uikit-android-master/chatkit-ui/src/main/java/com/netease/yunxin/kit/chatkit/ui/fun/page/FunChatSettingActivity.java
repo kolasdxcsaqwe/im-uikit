@@ -12,6 +12,8 @@ import static com.netease.yunxin.kit.corekit.im.utils.RouterConstant.REQUEST_CON
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -210,6 +212,12 @@ public class FunChatSettingActivity extends BaseActivity {
                     binding.notifySC.setChecked(!binding.notifySC.isChecked());
                   }
                 }));
+    binding.searchHistoryLayout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(FunChatSettingActivity.this,FunChatP2PSearchActivity.class));
+        }
+    });
   }
 
   private void selectUsersCreateGroup() {
