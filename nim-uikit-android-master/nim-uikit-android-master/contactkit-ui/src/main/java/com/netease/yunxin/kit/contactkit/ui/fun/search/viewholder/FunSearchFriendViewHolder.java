@@ -79,7 +79,6 @@ public class FunSearchFriendViewHolder extends BaseViewHolder<SearchFriendBean> 
         }
       }
       viewBinding.getRoot().setOnClickListener(v -> itemListener.onClick(v, data, position));
-      ;
     }
   }
 

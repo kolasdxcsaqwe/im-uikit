@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import com.netease.yunxin.app.im.BaseActivity;
 import com.netease.yunxin.app.im.dialog.LoadingDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -77,8 +80,17 @@ public abstract class OkhttpCallBack implements Callback {
                 @Override
                 public void run() {
                     try {
-                        onHttpResponse(call,response);
+                        String text=response.body().string();
+                        if(text!=null && text.length()>0)
+                        {
+                            JSONObject jsonObject=new JSONObject(text);
+                            String code=jsonObject.optString("code","");
+                            String msg=jsonObject.optString("msg","");
+                            onHttpResponse(call,jsonObject,code.equals("0"),msg);
+                        }
                     } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -89,5 +101,5 @@ public abstract class OkhttpCallBack implements Callback {
     }
 
     public abstract void onHttpFailure(@NonNull Call call, @NonNull IOException e);
-    public abstract void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException;
+    public abstract void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException;
 }

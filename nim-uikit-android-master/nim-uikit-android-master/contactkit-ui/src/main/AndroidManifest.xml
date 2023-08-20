@@ -90,6 +90,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".fun.search.FunSearchDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".fun.verify.FunVerifyListActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

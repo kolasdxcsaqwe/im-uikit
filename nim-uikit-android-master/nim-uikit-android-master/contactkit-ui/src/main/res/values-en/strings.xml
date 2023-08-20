@@ -101,5 +101,8 @@
     <!--    common-->
     <string name="cancel"> Cancel </string>
     <string name="contact_network_error_tip">No Internet</string>
+    <string name="more_chat">More Chat History</string>
+    <string name="more_contact">More Contacts</string>
+    <string name="chat_history">Chat History</string>
 
 </resources>

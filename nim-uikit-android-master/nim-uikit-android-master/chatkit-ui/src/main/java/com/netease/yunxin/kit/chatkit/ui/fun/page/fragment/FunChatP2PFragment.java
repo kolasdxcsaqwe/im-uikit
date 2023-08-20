@@ -11,8 +11,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.event.EventSubscribeServiceObserver;
+import com.netease.nimlib.sdk.event.model.Event;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.yunxin.kit.alog.ALog;
@@ -22,12 +28,19 @@ import com.netease.yunxin.kit.chatkit.ui.R;
 import com.netease.yunxin.kit.chatkit.ui.common.ChatUserCache;
 import com.netease.yunxin.kit.chatkit.ui.fun.view.MessageBottomLayout;
 import com.netease.yunxin.kit.chatkit.ui.model.ChatMessageBean;
+import com.netease.yunxin.kit.chatkit.ui.model.CloseChatPageEvent;
+import com.netease.yunxin.kit.chatkit.ui.model.DeleteChatHistory;
 import com.netease.yunxin.kit.chatkit.ui.page.viewmodel.ChatP2PViewModel;
 import com.netease.yunxin.kit.common.ui.viewmodel.LoadStatus;
+import com.netease.yunxin.kit.corekit.event.BaseEvent;
+import com.netease.yunxin.kit.corekit.event.EventCenter;
+import com.netease.yunxin.kit.corekit.event.EventNotify;
 import com.netease.yunxin.kit.corekit.im.model.FriendInfo;
 import com.netease.yunxin.kit.corekit.im.model.UserInfo;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
+
+import java.util.List;
 
 public class FunChatP2PFragment extends FunChatFragment {
   private static final String TAG = "ChatP2PFunFragment";
@@ -46,8 +59,26 @@ public class FunChatP2PFragment extends FunChatFragment {
 
   protected Observer<IMMessageReceiptInfo> p2pReceiptObserver;
 
+  protected final EventNotify<DeleteChatHistory> closeEventNotify =
+          new EventNotify<DeleteChatHistory>() {
+            @Override
+            public void onNotify(@NonNull DeleteChatHistory message) {
+              if(chatView!=null)
+              {
+                chatView.clearMessageList();
+              }
+            }
+
+            @NonNull
+            @Override
+            public String getEventType() {
+              return DeleteChatHistory.EVENT_TYPE;
+            }
+          };
+
   @Override
   protected void initData(Bundle bundle) {
+
     ALog.d(LIB_TAG, TAG, "initData");
     sessionType = SessionTypeEnum.P2P;
     userInfo = (UserInfo) bundle.getSerializable(RouterConstant.CHAT_KRY);
@@ -61,6 +92,47 @@ public class FunChatP2PFragment extends FunChatFragment {
     }
     anchorMessage = (IMMessage) bundle.getSerializable(RouterConstant.KEY_MESSAGE);
     refreshView();
+    EventCenter.registerEventNotify(closeEventNotify);
+
+    NIMClient.getService(EventSubscribeServiceObserver.class).observeEventChanged(new com.netease.nimlib.sdk.Observer<List<Event>>() {
+      @Override
+      public void onEvent(List<Event> result) {
+        // 处理
+        if (result != null) {
+          StringBuilder stringBuilder=new StringBuilder();
+          for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).getPublisherAccount().equals(userInfo.getAccount()) && chatView!=null)
+            {
+              int type=result.get(i).getEventValue();
+              String name = sessionID;
+              if (friendInfo != null) {
+                name = friendInfo.getName();
+              } else if (userInfo != null) {
+                name = userInfo.getName();
+              }
+
+              StringBuilder sb=new StringBuilder();
+              sb.append(name).append("(");
+              switch (type)
+              {
+                case 1://在线
+                  sb.append("在线").append(")");
+                  chatView.getTitleBar().setTitle(sb.toString());
+                  break;
+                case 2://离线
+                  sb.append("离线").append(")");
+                  chatView.getTitleBar().setTitle(sb.toString());
+                  break;
+                case 3://断开连接
+                  sb.append("连接断开").append(")");
+                  chatView.getTitleBar().setTitle(sb.toString());
+                  break;
+              }
+            }
+          }
+        }
+      }
+    }, true);
   }
 
   @Override

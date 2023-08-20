@@ -212,4 +212,11 @@
     <string name="chat_input_audio_record_title">按住 说话</string>
 
     <string name="chat_history_search">查询历史消息</string>
+    <string name="chat_remark">备注</string>
+    <string name="cleanChatRecords">清空聊天记录</string>
+
+    <string name="save">保存</string>
+    <string name="contact_network_error_tip">当前网络不可用，请检查你当网络设置。</string>
+    <string name="comment_name">备注名</string>
+
 </resources>

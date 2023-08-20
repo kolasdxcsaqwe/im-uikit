@@ -4,6 +4,7 @@
 
 package com.netease.yunxin.kit.contactkit.ui.search.page;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -16,15 +17,30 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.netease.nimlib.sdk.InvocationFuture;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.MsgSearchOption;
+import com.netease.yunxin.kit.chatkit.repo.ChatRepo;
 import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.ui.viewholder.BaseBean;
 import com.netease.yunxin.kit.common.ui.viewholder.ViewHolderClickListener;
 import com.netease.yunxin.kit.common.ui.viewmodel.LoadStatus;
 import com.netease.yunxin.kit.common.utils.KeyboardUtils;
+import com.netease.yunxin.kit.contactkit.ui.ContactConstant;
+import com.netease.yunxin.kit.contactkit.ui.fun.search.FunSearchDetailActivity;
+import com.netease.yunxin.kit.contactkit.ui.model.P2PChatHistoryBean;
+import com.netease.yunxin.kit.contactkit.ui.model.SearchMoreBean;
 import com.netease.yunxin.kit.contactkit.ui.search.SearchAdapter;
 import com.netease.yunxin.kit.contactkit.ui.search.SearchViewModel;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /** search your friend or team */
@@ -47,6 +63,8 @@ public abstract class BaseSearchActivity extends BaseActivity {
 
   protected String routerFriend = RouterConstant.PATH_CHAT_P2P_PAGE;
   protected String routerTeam = RouterConstant.PATH_CHAT_TEAM_PAGE;
+
+
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,10 +97,44 @@ public abstract class BaseSearchActivity extends BaseActivity {
             @Override
             public boolean onClick(View v, BaseBean data, int position) {
               if (!TextUtils.isEmpty(data.router)) {
-                XKitRouter.withKey(data.router)
-                    .withParam(data.paramKey, data.param)
-                    .withContext(BaseSearchActivity.this)
-                    .navigate();
+                if(data instanceof P2PChatHistoryBean)
+                {
+                  P2PChatHistoryBean chatP2PSearchBean=(P2PChatHistoryBean)data;
+                  XKitRouter.withKey(data.router)
+                          .withParam(RouterConstant.CHAT_ID_KRY, chatP2PSearchBean.getImMessage().getSessionId())
+                          .withParam(RouterConstant.KEY_MESSAGE,chatP2PSearchBean.getImMessage())
+                          .withContext(BaseSearchActivity.this)
+                          .navigate();
+
+                }
+                else
+                {
+                  XKitRouter.withKey(data.router)
+                          .withParam(data.paramKey, data.param)
+                          .withContext(BaseSearchActivity.this)
+                          .navigate();
+                }
+              }
+              else
+              {
+                if(data instanceof SearchMoreBean)
+                {
+                  SearchMoreBean searchMoreBean=(SearchMoreBean)data;
+                  Intent intent=new Intent(BaseSearchActivity.this,FunSearchDetailActivity.class);
+                  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  if(!TextUtils.isEmpty(searchMoreBean.getText()))
+                  {
+                    intent.putExtra("title",searchMoreBean.getText());
+                  }
+                  else
+                  {
+                    intent.putExtra("title",getString(searchMoreBean.getTextRes()));
+                  }
+
+                  intent.putExtra("type",searchMoreBean.getType());
+                  intent.putExtra("keyWords",searchMoreBean.getKeyWords());
+                  startActivity(intent);
+                }
               }
               return true;
             }
@@ -111,7 +163,10 @@ public abstract class BaseSearchActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
               searchHandler.removeCallbacksAndMessages(null);
-              searchHandler.postDelayed(() -> viewModel.query(String.valueOf(s)), 500);
+              int types[]=new int[2];
+              types[0]=ContactConstant.SearchViewType.USER;
+              types[1]=ContactConstant.SearchViewType.ChatHistory;
+              searchHandler.postDelayed(() -> viewModel.query(false,String.valueOf(s), types), 500);
               if (clearView != null) {
                 if (TextUtils.isEmpty(String.valueOf(s))) {
                   clearView.setVisibility(View.GONE);

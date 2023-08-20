@@ -70,11 +70,38 @@
         android:layout_marginTop="@dimen/dimen_8_dp"
         android:orientation="vertical">
 
+
+        <RelativeLayout
+            android:id="@+id/remarkLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50_dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/chat_remark"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_12" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_right_arrow"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1_dp"
+            android:background="@color/color_f5f8fc" />
+
         <RelativeLayout
             android:id="@+id/pinLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50_dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +122,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1_dp"
-            android:background="@color/color_f5f8fc" />
+            android:background="@color/color_f5f8fc"
+            android:visibility="gone"
+            />
 
         <RelativeLayout
             android:id="@+id/notifyLayout"
@@ -167,6 +196,32 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/chat_history_search"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/text_size_12" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_right_arrow"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1_dp"
+            android:background="@color/color_f5f8fc" />
+
+        <RelativeLayout
+            android:id="@+id/cleanHistoryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50_dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/cleanChatRecords"
                 android:textColor="@color/color_666666"
                 android:textSize="@dimen/text_size_12" />
 

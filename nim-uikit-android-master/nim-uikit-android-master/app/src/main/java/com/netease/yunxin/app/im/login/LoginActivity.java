@@ -116,14 +116,17 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if(response!=null)
+            public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
+                LoginIMResultBean loginIMResultBean=new Gson().fromJson(jsonObject.toString(),LoginIMResultBean.class);
+                if(loginIMResultBean.getCode().equals("0"))
                 {
-                    String json=response.body().string();
-                    LoginIMResultBean loginIMResultBean=new Gson().fromJson(json,LoginIMResultBean.class);
                     loginIMResultBean.setPassword(password);
                     loginIMResultBean.setUsername(userName);
                     loginIM(loginIMResultBean);
+                }
+                else
+                {
+                    ToastX.showShortToast(msg);
                 }
             }
         });

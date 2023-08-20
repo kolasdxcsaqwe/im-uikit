@@ -31,6 +31,7 @@ import com.netease.yunxin.kit.chatkit.ui.databinding.ActivityP2pChatSearchBindin
 import com.netease.yunxin.kit.chatkit.ui.databinding.FunChatSearchViewHolderBinding;
 import com.netease.yunxin.kit.chatkit.ui.fun.viewholder.FunSearchMessageP2PViewHolder;
 import com.netease.yunxin.kit.chatkit.ui.fun.viewholder.FunSearchMessageViewHolder;
+import com.netease.yunxin.kit.chatkit.ui.model.ChatP2PSearchBean;
 import com.netease.yunxin.kit.chatkit.ui.page.adapter.SearchMessageAdapter;
 import com.netease.yunxin.kit.chatkit.ui.page.adapter.SearchMessageP2PAdapter;
 import com.netease.yunxin.kit.chatkit.ui.page.viewmodel.SearchMessageP2PViewModel;
@@ -108,6 +109,15 @@ public class FunChatP2PSearchActivity extends BaseActivity {
                     @Override
                     public boolean onClick(View v, BaseBean data, int position) {
                         KeyboardUtils.hideKeyboard(FunChatP2PSearchActivity.this);
+                        if(data instanceof ChatP2PSearchBean)
+                        {
+                            ChatP2PSearchBean chatP2PSearchBean=(ChatP2PSearchBean)data;
+                            XKitRouter.withKey(RouterConstant.PATH_FUN_CHAT_P2P_PAGE)
+                                    .withParam(RouterConstant.CHAT_ID_KRY, accId)
+                                    .withParam(RouterConstant.KEY_MESSAGE,chatP2PSearchBean.getImMessage())
+                                    .withContext(FunChatP2PSearchActivity.this)
+                                    .navigate();
+                        }
 
                         return true;
                     }

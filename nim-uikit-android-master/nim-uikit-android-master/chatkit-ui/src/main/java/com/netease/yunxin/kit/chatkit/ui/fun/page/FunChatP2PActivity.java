@@ -9,8 +9,19 @@ import static com.netease.yunxin.kit.chatkit.ui.ChatKitUIConstant.LIB_TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.ResponseCode;
+import com.netease.nimlib.sdk.event.EventSubscribeService;
+import com.netease.nimlib.sdk.event.EventSubscribeServiceObserver;
+import com.netease.nimlib.sdk.event.model.Event;
+import com.netease.nimlib.sdk.event.model.EventSubscribeRequest;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.chatkit.ui.R;
@@ -19,6 +30,11 @@ import com.netease.yunxin.kit.chatkit.ui.fun.page.fragment.FunChatP2PFragment;
 import com.netease.yunxin.kit.chatkit.ui.page.ChatBaseActivity;
 import com.netease.yunxin.kit.corekit.im.model.UserInfo;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FunChatP2PActivity extends ChatBaseActivity {
 
@@ -54,6 +70,12 @@ public class FunChatP2PActivity extends ChatBaseActivity {
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     fragmentManager.beginTransaction().add(R.id.container, chatFragment).commitAllowingStateLoss();
+
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
   }
 
   @Override

@@ -210,5 +210,12 @@
     <string name="chat_input_more_album_title">Album</string>
     <string name="chat_input_audio_record_title">Hold to Talk</string>
     <string name="chat_history_search">Search Chat History</string>
+    <string name="chat_remark">remark</string>
+    <string name="cleanChatRecords">clean Chat Records</string>
+
+
+    <string name="comment_name">Nick Name</string>
+    <string name="contact_network_error_tip">No Internet</string>
+    <string name="save">Save</string>
 
 </resources>

@@ -14,5 +14,7 @@ public class ContactConstant {
     public static final int TEAM = 2;
     public static final int GROUP = 3;
     public static final int TITLE = 4;
+    public static final int MORE = 5;
+    public static final int ChatHistory = 6;
   }
 }

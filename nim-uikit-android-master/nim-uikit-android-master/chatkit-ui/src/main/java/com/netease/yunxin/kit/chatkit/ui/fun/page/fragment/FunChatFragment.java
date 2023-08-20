@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.event.EventSubscribeServiceObserver;
+import com.netease.nimlib.sdk.event.model.Event;
 import com.netease.yunxin.kit.chatkit.ui.R;
 import com.netease.yunxin.kit.chatkit.ui.common.ChatUtils;
 import com.netease.yunxin.kit.chatkit.ui.databinding.FunChatFragmentBinding;
@@ -17,9 +22,12 @@ import com.netease.yunxin.kit.chatkit.ui.fun.FunChatForwardSelectDialog;
 import com.netease.yunxin.kit.chatkit.ui.page.fragment.ChatBaseFragment;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 
+import java.util.List;
+
 public abstract class FunChatFragment extends ChatBaseFragment {
 
   FunChatFragmentBinding viewBinding;
+
 
   @Override
   public View initViewAndGetRootView(

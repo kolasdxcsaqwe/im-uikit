@@ -100,5 +100,9 @@
     <!--    common-->
     <string name="cancel">取消</string>
     <string name="contact_network_error_tip">当前网络不可用，请检查你当网络设置。</string>
+    <string name="more_chat">查看更多聊天记录</string>
+    <string name="more_contact">查看更多联系人</string>
+    <string name="chat_history">聊天记录</string>
+
 
 </resources>

@@ -10,11 +10,16 @@ import androidx.annotation.NonNull;
 import com.netease.yunxin.kit.common.ui.viewholder.BaseViewHolder;
 import com.netease.yunxin.kit.common.ui.viewholder.IViewHolderFactory;
 import com.netease.yunxin.kit.contactkit.ui.ContactConstant;
+import com.netease.yunxin.kit.contactkit.ui.databinding.FunChatHistoryItemBinding;
+import com.netease.yunxin.kit.contactkit.ui.databinding.FunSearchMoreItemBinding;
 import com.netease.yunxin.kit.contactkit.ui.databinding.FunSearchTitleViewHolderBinding;
 import com.netease.yunxin.kit.contactkit.ui.databinding.FunSearchUserViewHolderBinding;
+import com.netease.yunxin.kit.contactkit.ui.databinding.SearchTitleItemLayoutBinding;
 import com.netease.yunxin.kit.contactkit.ui.fun.search.viewholder.FunSearchFriendViewHolder;
 import com.netease.yunxin.kit.contactkit.ui.fun.search.viewholder.FunSearchTeamViewHolder;
 import com.netease.yunxin.kit.contactkit.ui.fun.search.viewholder.FunTitleViewHolder;
+import com.netease.yunxin.kit.contactkit.ui.fun.search.viewholder.FunChatHistoryViewHolder;
+import com.netease.yunxin.kit.contactkit.ui.fun.search.viewholder.FunTitleMoreViewHolder;
 
 /** search result list view holder factory */
 public class FunSearchViewHolderFactory implements IViewHolderFactory {
@@ -34,6 +39,18 @@ public class FunSearchViewHolderFactory implements IViewHolderFactory {
       return new FunSearchTeamViewHolder(
           FunSearchUserViewHolderBinding.inflate(
               LayoutInflater.from(parent.getContext()), parent, false));
+    }
+    else if(viewType == ContactConstant.SearchViewType.ChatHistory)
+    {
+      return new FunChatHistoryViewHolder(
+              FunChatHistoryItemBinding.inflate(
+                      LayoutInflater.from(parent.getContext()), parent, false));
+    }
+    else if(viewType == ContactConstant.SearchViewType.MORE)
+    {
+      return new FunTitleMoreViewHolder(
+              FunSearchMoreItemBinding.inflate(
+                      LayoutInflater.from(parent.getContext()), parent, false));
     }
     return null;
   }

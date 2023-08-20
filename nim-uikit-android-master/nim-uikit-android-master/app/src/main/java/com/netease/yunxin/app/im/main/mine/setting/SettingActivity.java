@@ -25,6 +25,8 @@ import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -120,8 +122,8 @@ public class SettingActivity extends BaseActivity {
           }
 
           @Override
-          public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if(response.isSuccessful())
+          public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
+                    if(isSuccess)
                     {
                         SPUtils.getInstance().remove(SPUtils.loginData);
                         IMKitClient.logoutIM(

@@ -19,15 +19,24 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.friend.constant.FriendFieldEnum;
+import com.netease.nimlib.sdk.friend.model.Friend;
+import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.StickTopSessionInfo;
 import com.netease.nimlib.sdk.team.model.CreateTeamResult;
 import com.netease.nimlib.sdk.team.model.Team;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.chatkit.repo.ConversationRepo;
 import com.netease.yunxin.kit.chatkit.ui.R;
 import com.netease.yunxin.kit.chatkit.ui.common.ChatCallback;
 import com.netease.yunxin.kit.chatkit.ui.databinding.FunChatSettingActivityBinding;
+import com.netease.yunxin.kit.chatkit.ui.dialog.CLeanHistoryDialog;
 import com.netease.yunxin.kit.chatkit.ui.model.CloseChatPageEvent;
 import com.netease.yunxin.kit.chatkit.ui.page.viewmodel.ChatSettingViewModel;
 import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
@@ -39,6 +48,8 @@ import com.netease.yunxin.kit.corekit.im.model.UserInfo;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Setting page for P2P chat and Team chat page */
 public class FunChatSettingActivity extends BaseActivity {
@@ -50,6 +61,18 @@ public class FunChatSettingActivity extends BaseActivity {
 
   UserInfo userInfo;
   String accId;
+
+  ActivityResultLauncher<Intent> commentLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == BaseCommentActivity.RESULT_OK
+                                && result.getData() != null) {
+                                        String comment =
+                                                result.getData().getStringExtra(BaseCommentActivity.REQUEST_COMMENT_NAME_KEY);
+                            binding.nameTv.setText(comment);
+                        }
+                    });
 
   protected final EventNotify<CloseChatPageEvent> closeEventNotify =
       new EventNotify<CloseChatPageEvent>() {
@@ -146,6 +169,27 @@ public class FunChatSettingActivity extends BaseActivity {
           userInfo.getAvatar(), name, AvatarColor.avatarColor(userInfo.getAccount()));
       binding.nameTv.setText(name);
     }
+
+      Friend friend=NIMClient.getService(FriendService.class).getFriendByAccount(accId);
+      if(!TextUtils.isEmpty(friend.getAlias()))
+      {
+          binding.nameTv.setText(friend.getAlias());
+      }
+      else
+      {
+          NimUserInfo nimUserInfo= NIMClient.getService(UserService.class).getUserInfo(friend.getAccount());
+          if(nimUserInfo!=null)
+          {
+              if(!TextUtils.isEmpty(nimUserInfo.getName()))
+              {
+                  binding.nameTv.setText(nimUserInfo.getName());
+              }
+              else
+              {
+                  binding.nameTv.setText(nimUserInfo.getAccount());
+              }
+          }
+      }
   }
 
   private void initData() {
@@ -219,6 +263,38 @@ public class FunChatSettingActivity extends BaseActivity {
             intent.putExtra(RouterConstant.CHAT_ID_KRY,accId);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        }
+    });
+
+    binding.cleanHistoryLayout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Friend friend=NIMClient.getService(FriendService.class).getFriendByAccount(accId);
+            if(friend!=null)
+            {
+                CLeanHistoryDialog dialog=new CLeanHistoryDialog(friend);
+                dialog.show(getSupportFragmentManager(), dialog.getClass().getName());
+            }
+
+        }
+    });
+    binding.remarkLayout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Friend friend=NIMClient.getService(FriendService.class).getFriendByAccount(accId);
+            if(friend!=null)
+            {
+                Intent intent = new Intent();
+                intent.setClass(FunChatSettingActivity.this, FunCommentActivity.class);
+                intent.putExtra("accId",accId);
+                if(!TextUtils.isEmpty(friend.getAlias()))
+                {
+                    intent.putExtra(
+                            BaseCommentActivity.REQUEST_COMMENT_NAME_KEY, friend.getAlias());
+                }
+
+                commentLauncher.launch(intent);
+            }
         }
     });
   }

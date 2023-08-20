@@ -36,6 +36,8 @@ import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import com.netease.yunxin.kit.corekit.im.login.LoginCallback;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -149,11 +151,16 @@ public class WelcomeActivity extends BaseActivity {
             }
 
             @Override
-            public void onHttpResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response != null) {
-                    String json = response.body().string();
-                    LoginIMResultBean loginIMResultBean = new Gson().fromJson(json, LoginIMResultBean.class);
+            public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
+
+                LoginIMResultBean loginIMResultBean=new Gson().fromJson(jsonObject.toString(),LoginIMResultBean.class);
+                if(loginIMResultBean.getCode().equals("0"))
+                {
                     loginIM(loginIMResultBean);
+                }
+                else
+                {
+                    ToastX.showShortToast(msg);
                 }
             }
         });
