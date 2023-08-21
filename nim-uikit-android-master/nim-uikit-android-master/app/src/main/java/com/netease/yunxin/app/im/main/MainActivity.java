@@ -22,10 +22,10 @@ import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.CustomConfig;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMainBinding;
+import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.main.mine.MineFragment;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
-import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.chatkit.repo.ContactRepo;
 import com.netease.yunxin.kit.chatkit.ui.custom.ChatConfigManager;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     ALog.d(Constant.PROJECT_TAG, "MainActivity:onCreate");
     if (TextUtils.isEmpty(IMKitClient.account())) {
-      Intent intent = new Intent(this, WelcomeActivity.class);
+      Intent intent = new Intent(this, LoginActivity.class);
       startActivity(intent);
       finish();
       return;

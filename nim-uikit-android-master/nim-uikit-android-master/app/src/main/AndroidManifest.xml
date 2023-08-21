@@ -66,9 +66,9 @@
             android:name="com.amap.api.v2.apikey"
             android:value="your apikey" />
 
-        <activity android:name=".welcome.WelcomeActivity"
+        <activity android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
-
+            android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,7 +80,7 @@
             android:name=".main.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="false">
 
             <intent-filter>
                 <action android:name="https://netease.yunxin.im.demo.home"/>
@@ -96,12 +96,6 @@
 
         <activity
             android:name=".QrCaptureActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
-            android:exported="false" />
-
-        <activity
-            android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             android:exported="false" />

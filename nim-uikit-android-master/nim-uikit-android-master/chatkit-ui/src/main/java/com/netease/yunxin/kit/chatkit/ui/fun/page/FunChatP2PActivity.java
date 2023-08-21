@@ -84,4 +84,5 @@ public class FunChatP2PActivity extends ChatBaseActivity {
     ALog.e(LIB_TAG, TAG, "onNewIntent");
     chatFragment.onNewIntent(intent);
   }
+
 }

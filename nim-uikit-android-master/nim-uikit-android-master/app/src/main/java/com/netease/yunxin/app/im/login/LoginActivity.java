@@ -18,7 +18,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.BaseActivity;
+import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.bean.LoginIMResultBean;
 import com.netease.yunxin.app.im.databinding.ActivityLoginBinding;
@@ -56,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        IMApplication.setColdStart(true);
         alb= ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(alb.getRoot());
 
@@ -67,8 +70,11 @@ public class LoginActivity extends BaseActivity {
         alb.tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+
+                Intent intent = new Intent();
+                intent.setClass(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.h_enter, R.anim.donothing);
             }
         });
         alb.tvLogin.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +94,13 @@ public class LoginActivity extends BaseActivity {
                 login(alb.etLoginName.getText().toString(),alb.etPassword.getText().toString());
             }
         });
+
+        AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
+        String loginData = SPUtils.getInstance().get(SPUtils.loginData, "");
+        if (!TextUtils.isEmpty(loginData)) {
+            LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
+            login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
+        }
     }
 
     @Override
@@ -176,7 +189,9 @@ public class LoginActivity extends BaseActivity {
            currentTime=System.currentTimeMillis();
        }
 
-
-
     }
+
+
+
+
 }

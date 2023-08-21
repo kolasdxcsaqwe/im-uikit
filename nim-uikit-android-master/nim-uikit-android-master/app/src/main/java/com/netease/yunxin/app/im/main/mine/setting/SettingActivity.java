@@ -16,10 +16,10 @@ import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMineSettingBinding;
+import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.utils.HttpRequest;
 import com.netease.yunxin.app.im.utils.OkhttpCallBack;
 import com.netease.yunxin.app.im.utils.SPUtils;
-import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.chatkit.ui.custom.ChatConfigManager;
 import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
@@ -143,7 +143,8 @@ public class SettingActivity extends BaseActivity {
                                             ((IMApplication) getApplicationContext())
                                                     .clearActivity(SettingActivity.this);
                                         }
-                                        startActivity(new Intent(SettingActivity.this, WelcomeActivity.class));
+                                        SPUtils.getInstance().remove(SPUtils.loginData);
+                                        startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                                         finish();
                                     }
                                 });

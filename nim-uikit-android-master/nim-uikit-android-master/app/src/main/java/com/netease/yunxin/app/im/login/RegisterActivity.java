@@ -69,12 +69,11 @@ public class RegisterActivity extends BaseActivity {
             public void onClick(View v) {
                 finish();
                 startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                overridePendingTransition(R.anim.h_enter, R.anim.donothing);
             }
         });
 
-
     }
-
 
     private void register(String userName,String password)
     {
@@ -133,4 +132,5 @@ public class RegisterActivity extends BaseActivity {
         this.startActivity(intent);
         finish();
     }
+
 }

@@ -57,7 +57,7 @@ public class WelcomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ALog.d(Constant.PROJECT_TAG, TAG, "onCreateView");
-        IMApplication.setColdStart(true);
+
         activityWelcomeBinding = ActivityWelcomeBinding.inflate(getLayoutInflater());
         setContentView(activityWelcomeBinding.getRoot());
 

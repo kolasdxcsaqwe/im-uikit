@@ -42,20 +42,27 @@ public abstract class OkhttpCallBack implements Callback {
     public void onFailure(@NonNull Call call, @NonNull IOException e) {
         if(!context.isDestroyed() && !context.isFinishing())
         {
-            if(context instanceof BaseActivity)
-            {
-                ((BaseActivity)context).dismissLoading();
-            }
-
-            if(context instanceof com.netease.yunxin.kit.common.ui.activities.BaseActivity)
-            {
-                ((com.netease.yunxin.kit.common.ui.activities.BaseActivity)context).dismissLoading();
-            }
-
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    onHttpFailure(call,e);
+                    try
+                    {
+                        onHttpFailure(call,e);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.printStackTrace();
+                    }
+
+                    if(context instanceof BaseActivity)
+                    {
+                        ((BaseActivity)context).dismissLoading();
+                    }
+
+                    if(context instanceof com.netease.yunxin.kit.common.ui.activities.BaseActivity)
+                    {
+                        ((com.netease.yunxin.kit.common.ui.activities.BaseActivity)context).dismissLoading();
+                    }
                 }
             });
 
@@ -66,15 +73,6 @@ public abstract class OkhttpCallBack implements Callback {
     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
         if(!context.isDestroyed() && !context.isFinishing())
         {
-            if(context instanceof BaseActivity)
-            {
-                ((BaseActivity)context).dismissLoading();
-            }
-
-            if(context instanceof com.netease.yunxin.kit.common.ui.activities.BaseActivity)
-            {
-                ((com.netease.yunxin.kit.common.ui.activities.BaseActivity)context).dismissLoading();
-            }
 
             context.runOnUiThread(new Runnable() {
                 @Override
@@ -92,6 +90,20 @@ public abstract class OkhttpCallBack implements Callback {
                         throw new RuntimeException(e);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
+                    }
+                    catch (Exception exception)
+                    {
+                        exception.printStackTrace();
+                    }
+
+                    if(context instanceof BaseActivity)
+                    {
+                        ((BaseActivity)context).dismissLoading();
+                    }
+
+                    if(context instanceof com.netease.yunxin.kit.common.ui.activities.BaseActivity)
+                    {
+                        ((com.netease.yunxin.kit.common.ui.activities.BaseActivity)context).dismissLoading();
                     }
                 }
             });

@@ -13,13 +13,13 @@ import com.huawei.hms.support.common.ActivityMgr;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.yunxin.app.im.crash.AppCrashHandler;
+import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.main.MainActivity;
 import com.netease.yunxin.app.im.main.mine.MineInfoActivity;
 import com.netease.yunxin.app.im.push.PushMessageHandler;
 import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.SPUtils;
-import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import com.netease.yunxin.kit.corekit.im.repo.SettingRepo;
@@ -97,7 +97,7 @@ public class IMApplication extends MultiDexApplication {
           @Override
           public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             if (TextUtils.isEmpty(IMKitClient.account())
-                && !(activity instanceof MainActivity || activity instanceof WelcomeActivity)
+                && !(activity instanceof MainActivity || activity instanceof LoginActivity)
                 && !coldStart) {
               activity.finish();
             } else {
