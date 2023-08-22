@@ -101,6 +101,7 @@ public class LoginActivity extends BaseActivity {
             LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
             login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
         }
+        alb.spinKit.setVisibility(View.GONE);
     }
 
     @Override
