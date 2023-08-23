@@ -13,6 +13,7 @@ public class HttpRequest {
     public static final String register="user/register";
     public static final String login="user/login";
     public static final String logout="user/logout";
+    public static final String updatePwd="user/updatePwd";
 
     static OkHttpClient okHttpClient;
 

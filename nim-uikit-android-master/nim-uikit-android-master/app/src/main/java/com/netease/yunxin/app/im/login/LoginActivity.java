@@ -11,9 +11,12 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
@@ -101,6 +104,10 @@ public class LoginActivity extends BaseActivity {
             LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
             login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
         }
+        else
+        {
+            alb.rlSKV.setVisibility(View.GONE);
+        }
 
     }
 
@@ -141,6 +148,7 @@ public class LoginActivity extends BaseActivity {
                 else
                 {
                     ToastX.showShortToast(msg);
+                    alb.rlSKV.setVisibility(View.GONE);
                 }
             }
         });

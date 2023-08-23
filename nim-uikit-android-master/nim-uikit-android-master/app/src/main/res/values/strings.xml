@@ -48,6 +48,8 @@
     <!-- setting -->
     <string name="setting_notify">消息提醒</string>
     <string name="setting_clear_cache">清理缓存</string>
+    <string name="setting_clear_chat_history">清理全部聊天记录</string>
+    <string name="setting_edit_password">修改密码</string>
     <string name="setting_play_mode">听筒模式</string>
     <string name="setting_filter_notify">过滤通知</string>
     <string name="setting_friend_delete_mode">删除好友是否同步删除备注</string>

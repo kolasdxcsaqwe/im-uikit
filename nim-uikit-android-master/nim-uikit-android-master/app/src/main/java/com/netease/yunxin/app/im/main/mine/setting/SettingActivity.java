@@ -6,6 +6,7 @@ package com.netease.yunxin.app.im.main.mine.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.DrawableRes;
@@ -16,12 +17,18 @@ import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMineSettingBinding;
+import com.netease.yunxin.app.im.dialog.DialogConfirmClearCache;
+import com.netease.yunxin.app.im.dialog.DialogConfirmClearChatHistory;
 import com.netease.yunxin.app.im.login.LoginActivity;
+import com.netease.yunxin.app.im.main.mine.ChangePasswordActivity;
+import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.HttpRequest;
 import com.netease.yunxin.app.im.utils.OkhttpCallBack;
 import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.kit.chatkit.ui.custom.ChatConfigManager;
 import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
+import com.netease.yunxin.kit.common.ui.viewmodel.LoadStatus;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 
@@ -38,6 +45,8 @@ public class SettingActivity extends BaseActivity {
   private ActivityMineSettingBinding viewBinding;
   private SettingViewModel viewModel;
 
+  private ClearCacheViewModel clearCacheViewModel;
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     changeStatusBarColor(R.color.color_e9eff5);
@@ -48,10 +57,25 @@ public class SettingActivity extends BaseActivity {
     initView();
   }
 
+
   private void initView() {
     // delete alias
+      clearCacheViewModel = new ViewModelProvider(this).get(ClearCacheViewModel.class);
+      clearCacheViewModel
+              .getSdkCacheLiveData()
+              .observe(
+                      this,
+                      result -> {
+                          if (result.getLoadStatus() == LoadStatus.Success) {
+                              long size = result.getData() != null ? result.getData() : 0;
+                              String text =
+                                      String.format(getString(R.string.cache_size_text), DataUtils.getSizeToM(size));
+                              viewBinding.clearSdkSizeTv.setText(text);
+                          }
+                      });
+      clearCacheViewModel.getSdkCacheSize();
 
-    // show read and unread status
+      // show read and unread status
     viewBinding.messageReadSc.setChecked(viewModel.getShowReadStatus());
     viewBinding.messageReadSc.setOnClickListener(
         v -> {
@@ -75,7 +99,40 @@ public class SettingActivity extends BaseActivity {
         v -> startActivity(new Intent(SettingActivity.this, SkinActivity.class)));
 
     viewBinding.clearFl.setOnClickListener(
-        v -> startActivity(new Intent(SettingActivity.this, ClearCacheActivity.class)));
+        v -> clearCacheViewModel.clearSDKCache());
+
+    viewBinding.clearFl.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DialogConfirmClearCache.showDialog(getSupportFragmentManager()).setOnClickConfirmListener(new DialogConfirmClearCache.OnClickConfirmListener() {
+                @Override
+                public void onCLick() {
+                    clearCacheViewModel.clearSDKCache();
+                }
+            });
+        }
+    });
+
+    viewBinding.editPassword.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(SettingActivity.this, ChangePasswordActivity.class));
+        }
+    });
+
+    viewBinding.clearChatHistory.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DialogConfirmClearChatHistory.showDialog(getSupportFragmentManager()).setOnClickConfirmListener(new DialogConfirmClearChatHistory.OnClickConfirmListener() {
+                @Override
+                public void onCLick() {
+                    clearCacheViewModel.clearMessageCache();
+                    ToastX.showShortToast(R.string.clear_message_tips);
+                }
+            });
+
+        }
+    });
 
     viewBinding.tvLogout.setOnClickListener(
         v ->{
@@ -158,6 +215,10 @@ public class SettingActivity extends BaseActivity {
   @Override
   protected void onResume() {
     super.onResume();
+    if(clearCacheViewModel!= null)
+    {
+        clearCacheViewModel.getSdkCacheSize();
+    }
   }
 
   private void updateCommonView(@DrawableRes int thumbRes, @DrawableRes int trackRes) {

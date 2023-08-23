@@ -49,6 +49,8 @@
     <!-- setting -->
     <string name="setting_notify">Notification</string>
     <string name="setting_clear_cache">Clear Cache</string>
+    <string name="setting_clear_chat_history">Clear All Of The Chat History</string>
+    <string name="setting_edit_password">Change Password</string>
     <string name="setting_play_mode">Handset Mode</string>
     <string name="setting_filter_notify">Filter notifications</string>
     <string name="setting_friend_delete_mode">Delete Remark</string>

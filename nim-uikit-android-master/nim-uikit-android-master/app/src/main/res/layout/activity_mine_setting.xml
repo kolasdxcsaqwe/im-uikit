@@ -64,7 +64,7 @@
         <FrameLayout android:id="@+id/clear_fl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_46_dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/clear_tip_tv"
@@ -73,6 +73,72 @@
                 android:layout_marginStart="@dimen/dimen_16_dp"
                 android:gravity="center"
                 android:text="@string/setting_clear_cache"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/dimen_16_dp" />
+
+
+
+            <TextView
+                android:id="@+id/clearSdkSizeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_16"
+                android:layout_marginEnd="36dp"
+                android:drawablePadding="5dip"
+                android:drawableRight="@drawable/ic_frame_mine_right_arrow"
+                android:layout_gravity="end|center_vertical" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/color_f5f8fc"/>
+
+        <FrameLayout android:id="@+id/clearChatHistory"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_46_dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvClearChatHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_46_dp"
+                android:layout_marginStart="@dimen/dimen_16_dp"
+                android:gravity="center"
+                android:text="@string/setting_clear_chat_history"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/dimen_16_dp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="36dp"
+                android:src="@drawable/ic_frame_mine_right_arrow"
+                android:layout_gravity="end|center_vertical" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/color_f5f8fc"/>
+
+        <FrameLayout android:id="@+id/editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_46_dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvEditPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_46_dp"
+                android:layout_marginStart="@dimen/dimen_16_dp"
+                android:gravity="center"
+                android:text="@string/setting_edit_password"
                 android:textColor="@color/color_333333"
                 android:textSize="@dimen/dimen_16_dp" />
 
@@ -107,6 +173,7 @@
                 android:src="@drawable/ic_frame_mine_right_arrow"
                 android:layout_gravity="end|center_vertical" />
         </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout

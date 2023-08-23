@@ -1,5 +1,6 @@
 package com.netease.yunxin.kit.chatkit.ui.dialog;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.netease.yunxin.kit.chatkit.ui.databinding.ChatMessageForwardConfirmLa
 import com.netease.yunxin.kit.chatkit.ui.databinding.DialogChatHistoryCleanBinding;
 import com.netease.yunxin.kit.chatkit.ui.model.DeleteChatHistory;
 import com.netease.yunxin.kit.common.ui.dialog.BaseDialog;
+import com.netease.yunxin.kit.common.utils.ScreenUtils;
 import com.netease.yunxin.kit.corekit.event.BaseEvent;
 import com.netease.yunxin.kit.corekit.event.EventCenter;
 
@@ -41,6 +43,7 @@ public class CLeanHistoryDialog extends BaseDialog {
     @Override
     protected View getRootView(@NonNull LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup) {
         binding = DialogChatHistoryCleanBinding.inflate(layoutInflater, viewGroup, false);
+
         if(!TextUtils.isEmpty(friend.getAlias()))
         {
             binding.tvContent.setText(String.format("确定与%s清空历史记录吗?",friend.getAlias()));
@@ -82,5 +85,10 @@ public class CLeanHistoryDialog extends BaseDialog {
         return binding.getRoot();
     }
 
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        int width=(int)(ScreenUtils.getDisplayWidth()*0.8f);
+        binding.llMain.getLayoutParams().width=width;
+    }
 }

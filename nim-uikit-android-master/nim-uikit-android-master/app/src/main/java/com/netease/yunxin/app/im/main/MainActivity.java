@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
 
     fragments.add(mConversationFragment);
     fragments.add(mContactFragment);
-
+    fragments.add(new TaskFragment());
     fragments.add(new MineFragment());
 
     FragmentAdapter fragmentAdapter = new FragmentAdapter(this);
@@ -263,6 +263,10 @@ public class MainActivity extends BaseActivity {
     activityMainBinding.contact.setTextColor(getResources().getColor(R.color.tab_unchecked_color));
     activityMainBinding.contact.setCompoundDrawablesWithIntrinsicBounds(
         null, getResources().getDrawable(R.mipmap.ic_contact_tab_unchecked), null, null);
+
+    activityMainBinding.tvTask.setTextColor(getResources().getColor(R.color.tab_unchecked_color));
+    activityMainBinding.tvTask.setCompoundDrawablesWithIntrinsicBounds(
+            null, getResources().getDrawable(R.mipmap.cloud_normal), null, null);
 
     activityMainBinding.mine.setTextColor(getResources().getColor(R.color.tab_unchecked_color));
     activityMainBinding.mine.setCompoundDrawablesWithIntrinsicBounds(

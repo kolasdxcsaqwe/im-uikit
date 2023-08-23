@@ -58,7 +58,7 @@
         android:theme="@style/Theme.Xkit">
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="ee59a004add8f721d7095842ea35b7df" />
+            android:value="fdeee5472da804a1da4ff6a3c96ab986" />
         <meta-data
             android:name="com.netease.nim.oversea.appKey"
             android:value="your appKey" />
@@ -87,6 +87,11 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".main.mine.ChangePasswordActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="standard"
+            android:exported="false"/>
 
         <activity
             android:name=".main.mine.MyQrcodeActivity"

@@ -48,7 +48,7 @@ public class ClearCacheViewModel extends BaseViewModel {
         getSDKFileType(),
         new FetchCallback<Void>() {
           @Override
-          public void onSuccess(@Nullable Void param) {}
+          public void onSuccess(@Nullable Void param) {getSdkCacheSize();}
 
           @Override
           public void onFailed(int code) {}
