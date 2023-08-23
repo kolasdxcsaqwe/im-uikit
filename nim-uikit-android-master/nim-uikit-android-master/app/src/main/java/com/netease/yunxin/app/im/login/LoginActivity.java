@@ -101,7 +101,7 @@ public class LoginActivity extends BaseActivity {
             LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
             login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
         }
-        alb.spinKit.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -148,6 +148,7 @@ public class LoginActivity extends BaseActivity {
 
 
     private void loginIM(LoginIMResultBean bean) {
+        alb.rlSKV.setVisibility(View.VISIBLE);
         LoginInfo loginInfo =
                 LoginInfo.LoginInfoBuilder.loginInfoDefault(bean.getAccid(), bean.getImToken())
                         .withAppKey(DataUtils.readAppKey(this))
@@ -157,8 +158,10 @@ public class LoginActivity extends BaseActivity {
                 new LoginCallback<LoginInfo>() {
                     @Override
                     public void onError(int errorCode, @NonNull String errorMsg) {
+                        alb.rlSKV.setVisibility(View.GONE);
                         ToastX.showShortToast(
                                 String.format(getResources().getString(R.string.login_fail), errorCode));
+
                     }
 
                     @Override
@@ -174,6 +177,7 @@ public class LoginActivity extends BaseActivity {
         intent.setClass(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         this.startActivity(intent);
+        overridePendingTransition(R.anim.h_exit, R.anim.donothing);
         finish();
     }
 

@@ -56,9 +56,9 @@ public class BaseActivity extends com.netease.yunxin.kit.common.ui.activities.Ba
         }
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.h_exit, R.anim.donothing);
-    }
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        overridePendingTransition(R.anim.h_exit, R.anim.donothing);
+//    }
 }
