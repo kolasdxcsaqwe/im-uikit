@@ -195,8 +195,23 @@ public class MainActivity extends BaseActivity {
             null, getResources().getDrawable(R.mipmap.ic_contact_tab_checked), null, null);
         changeStatusBarColor(R.color.color_white);
       }
-    } else if (mCurrentTab == activityMainBinding.myselfBtnGroup) {
+    }
+    else if (mCurrentTab == activityMainBinding.taskBtnGroup) {
       activityMainBinding.viewPager.setCurrentItem(2, false);
+      if (isCommonSkin) {
+        activityMainBinding.tvTask.setTextColor(
+                getResources().getColor(R.color.fun_tab_checked_color));
+        activityMainBinding.tvTask.setCompoundDrawablesWithIntrinsicBounds(
+                null, getResources().getDrawable(R.mipmap.cloud_selected), null, null);
+      } else {
+        activityMainBinding.tvTask.setTextColor(getResources().getColor(R.color.tab_checked_color));
+        activityMainBinding.tvTask.setCompoundDrawablesWithIntrinsicBounds(
+                null, getResources().getDrawable(R.mipmap.ic_mine_tab_checked), null, null);
+      }
+      changeStatusBarColor(R.color.color_white);
+    }
+    else if (mCurrentTab == activityMainBinding.myselfBtnGroup) {
+      activityMainBinding.viewPager.setCurrentItem(3, false);
       if (isCommonSkin) {
         activityMainBinding.mine.setTextColor(
             getResources().getColor(R.color.fun_tab_checked_color));

@@ -27,6 +27,8 @@ import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -78,9 +80,22 @@ public class ChangePasswordActivity extends BaseActivity {
             return;
         }
 
-        RequestBody requestBody= new FormBody.Builder().add("newPwd",acpb.etPassword.getText().toString()).add("oldPwd",acpb.etOldPassword.getText().toString()).build();
+        RequestBody requestBody= new FormBody.Builder()
+                .add("newPwd",acpb.etPassword.getText().toString())
+                .add("oldPwd",acpb.etOldPassword.getText().toString())
+                .build();
 
-        HttpRequest.post(HttpRequest.updatePwd, requestBody, new OkhttpCallBack(true,this) {
+
+        List<HttpRequest.Head> heads=new ArrayList<>();
+
+        String loginData = SPUtils.getInstance().get(SPUtils.loginData, "");
+        if (!TextUtils.isEmpty(loginData)) {
+            LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
+            heads.add(new HttpRequest.Head("token",loginIMResultBean.getToken()));
+            heads.add(new HttpRequest.Head("token","zh_CN"));
+        }
+
+        HttpRequest.post(HttpRequest.updatePwd,heads, requestBody, new OkhttpCallBack(true,this) {
             @Override
             public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
             }
@@ -94,7 +109,7 @@ public class ChangePasswordActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(loginData)) {
                         LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
                         loginIMResultBean.setPassword(acpb.etPassword.getText().toString());
-
+                        ToastX.showShortToast("密码修改成功,请重新登录");
                         logout();
                     }
                 }
