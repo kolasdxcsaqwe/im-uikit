@@ -17,7 +17,8 @@
     <string name="recent_title">Last chat</string> 
     <string name="cancel_title">Cancel </string> 
     <string name="sure_title">Yes</string> 
-    <string name="sure_count_title">Yes(%d)</string> 
+    <string name="sure_count_title">Yes(%d)</string>
+    <string name="scan_qrcode">Scan QRCode</string>
 
     <string name="conversation_network_error_tip">No Internet</string>
     <string name="conversation_empty_tip">No Chat</string>

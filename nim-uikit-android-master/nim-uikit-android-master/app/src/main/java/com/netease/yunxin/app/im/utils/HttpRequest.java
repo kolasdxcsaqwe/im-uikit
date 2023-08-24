@@ -16,8 +16,24 @@ public class HttpRequest {
     public static final String login="user/login";
     public static final String logout="user/logout";
     public static final String updatePwd="user/updatePwd";
+    public static final String systemConfig="system/config";
+    public static final String systemVersion="system/version";
 
     static OkHttpClient okHttpClient;
+
+
+    public static void get(String url, Callback callback)
+    {
+        if(okHttpClient==null)
+        {
+            okHttpClient=new OkHttpClient();
+        }
+
+        Request request=new Request.Builder().addHeader("content-type","application/json")
+                .url(baseUrl+url).build();
+
+        okHttpClient.newCall(request).enqueue(callback);
+    }
 
     public static void post(String url, RequestBody requestBody, Callback callback)
     {

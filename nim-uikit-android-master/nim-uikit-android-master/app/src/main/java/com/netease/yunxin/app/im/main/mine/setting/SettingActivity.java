@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import com.netease.yunxin.app.im.AppSkinConfig;
+import com.netease.yunxin.app.im.dialog.DialogConfirmClearCache;
 import com.netease.yunxin.app.im.IMApplication;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMineSettingBinding;
-import com.netease.yunxin.app.im.dialog.DialogConfirmClearCache;
 import com.netease.yunxin.app.im.dialog.DialogConfirmClearChatHistory;
 import com.netease.yunxin.app.im.login.LoginActivity;
 import com.netease.yunxin.app.im.main.mine.ChangePasswordActivity;
@@ -38,7 +38,6 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
-import okhttp3.Response;
 
 public class SettingActivity extends BaseActivity {
 

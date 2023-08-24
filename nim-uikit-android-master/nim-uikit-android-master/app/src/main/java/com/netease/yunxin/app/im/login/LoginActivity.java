@@ -28,8 +28,10 @@ import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.bean.LoginIMResultBean;
 import com.netease.yunxin.app.im.databinding.ActivityLoginBinding;
 import com.netease.yunxin.app.im.databinding.ActivityRegisterBinding;
+import com.netease.yunxin.app.im.dialog.DialogUpgradeVersionConfirm;
 import com.netease.yunxin.app.im.dialog.LoadingDialog;
 import com.netease.yunxin.app.im.main.MainActivity;
+import com.netease.yunxin.app.im.utils.AppUtils;
 import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.HttpRequest;
 import com.netease.yunxin.app.im.utils.OkhttpCallBack;
@@ -98,16 +100,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
-        String loginData = SPUtils.getInstance().get(SPUtils.loginData, "");
-        if (!TextUtils.isEmpty(loginData)) {
-            LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
-            login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
-        }
-        else
-        {
-            alb.rlSKV.setVisibility(View.GONE);
-        }
+        getVersion();
 
     }
 
@@ -205,6 +198,87 @@ public class LoginActivity extends BaseActivity {
     }
 
 
+    private void getUrl()
+    {
+        HttpRequest.get(HttpRequest.systemConfig, new OkhttpCallBack(false,this) {
+            @Override
+            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
 
+            }
+
+            @Override
+            public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
+                if(isSuccess)
+                {
+                    SPUtils.getInstance().save(SPUtils.ConfigData,jsonObject.toString());
+                }
+                else
+                {
+                    ToastX.showShortToast(msg);
+                }
+            }
+        });
+    }
+
+    private void getVersion()
+    {
+        HttpRequest.get(HttpRequest.systemVersion, new OkhttpCallBack(true,this) {
+            @Override
+            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
+                if(isSuccess)
+                {
+                    JSONObject data=jsonObject.optJSONObject("data");
+                    JSONObject android=data.optJSONObject("android");
+                    String version=android.optString("version","");
+                    String url=android.optString("url","");
+
+                    String onlineCode = version.replaceAll("\\.", "");
+                    String NativeCode = AppUtils.getAppVersionName(LoginActivity.this).replaceAll("\\.", "");
+                    try {
+                        if (Integer.valueOf(onlineCode) > Integer.valueOf(NativeCode)) {
+                            DialogUpgradeVersionConfirm.showDialog(getSupportFragmentManager()).setOnClickConfirmListener(new DialogUpgradeVersionConfirm.OnClickConfirmListener() {
+                                @Override
+                                public void onCLick(boolean isConfirm) {
+                                    if(isConfirm)
+                                    {
+                                        AppUtils.skipWebpage(LoginActivity.this,url);
+                                    }
+                                    else
+                                    {
+                                        finish();
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            AppSkinConfig.getInstance().setAppSkinStyle(AppSkinConfig.AppSkin.commonSkin);
+                            String loginData = SPUtils.getInstance().get(SPUtils.loginData, "");
+                            if (!TextUtils.isEmpty(loginData)) {
+                                LoginIMResultBean loginIMResultBean = new Gson().fromJson(loginData, LoginIMResultBean.class);
+                                login(loginIMResultBean.getUsername(),loginIMResultBean.getPassword());
+                            }
+                            else
+                            {
+                                alb.rlSKV.setVisibility(View.GONE);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+                else
+                {
+                    ToastX.showShortToast(msg);
+                }
+            }
+        });
+    }
 
 }

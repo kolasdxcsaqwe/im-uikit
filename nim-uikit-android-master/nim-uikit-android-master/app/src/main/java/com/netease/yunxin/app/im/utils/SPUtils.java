@@ -11,6 +11,7 @@ public class SPUtils {
     static SharedPreferences sharedPref =null;
 
     public static final String loginData="loginData";
+    public static final String ConfigData="ConfigData";
 
     public static SPUtils getInstance() {
         if(spUtils==null)

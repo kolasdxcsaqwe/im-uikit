@@ -54,8 +54,9 @@
     <string name="add_black_list">Block</string>
     <string name="chat">Chat</string> 
     <string name="delete_friend">Delete Contact</string> 
-    <string name="add_friend">Add Contact</string> 
-    <string name="contact_user_info_account">Account:%s</string> 
+    <string name="add_friend">Add Contact</string>
+    <string name="scan_qrcode">Scan QRCode</string>
+    <string name="contact_user_info_account">Account:%s</string>
     <string name="contact_user_info_nickname">Nick Name:%s</string>
     <string name="delete_contact_account">Dlete “%s”</string> 
     <string name="save">Save</string> 

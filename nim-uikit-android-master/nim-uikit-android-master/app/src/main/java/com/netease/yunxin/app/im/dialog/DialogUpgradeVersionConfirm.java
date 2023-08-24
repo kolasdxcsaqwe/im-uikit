@@ -13,20 +13,20 @@ import com.netease.yunxin.app.im.databinding.DialogReConfirmBinding;
 import com.netease.yunxin.kit.common.ui.dialog.BaseDialog;
 import com.netease.yunxin.kit.common.utils.ScreenUtils;
 
-public class DialogConfirmClearChatHistory extends BaseDialog {
+public class DialogUpgradeVersionConfirm  extends BaseDialog {
 
 
     DialogReConfirmBinding binding;
-    DialogConfirmClearChatHistory.OnClickConfirmListener onClickConfirmListener;
+    OnClickConfirmListener onClickConfirmListener;
 
-    public static DialogConfirmClearChatHistory showDialog(FragmentManager fragmentManager)
+    public static DialogUpgradeVersionConfirm showDialog(FragmentManager fragmentManager)
     {
-        DialogConfirmClearChatHistory dialogConfirmClearChatHistory=new DialogConfirmClearChatHistory();
-        dialogConfirmClearChatHistory.show(fragmentManager,dialogConfirmClearChatHistory.getClass().getName());
-        return dialogConfirmClearChatHistory;
+        DialogUpgradeVersionConfirm dialogUpgradeVersionConfirm=new DialogUpgradeVersionConfirm();
+        dialogUpgradeVersionConfirm.show(fragmentManager,dialogUpgradeVersionConfirm.getClass().getName());
+        return dialogUpgradeVersionConfirm;
     }
 
-    public void setOnClickConfirmListener(DialogConfirmClearChatHistory.OnClickConfirmListener onClickConfirmListener) {
+    public void setOnClickConfirmListener(OnClickConfirmListener onClickConfirmListener) {
         this.onClickConfirmListener = onClickConfirmListener;
     }
 
@@ -35,13 +35,17 @@ public class DialogConfirmClearChatHistory extends BaseDialog {
     protected View getRootView(@NonNull LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup) {
         binding = com.netease.yunxin.app.im.databinding.DialogReConfirmBinding.inflate(layoutInflater, viewGroup, false);
 
-        binding.tvTitle.setText("清除聊天记录");
-        binding.tvContent.setText("确定清除所有聊天记录吗");
+        binding.tvTitle.setText("版本更新");
+        binding.tvContent.setText("有新的版本可以更新！");
 
         binding.tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismissAllowingStateLoss();
+                if(onClickConfirmListener!=null)
+                {
+                    onClickConfirmListener.onCLick(false);
+                }
             }
         });
 
@@ -51,7 +55,7 @@ public class DialogConfirmClearChatHistory extends BaseDialog {
                 dismissAllowingStateLoss();
                 if(onClickConfirmListener!=null)
                 {
-                    onClickConfirmListener.onCLick();
+                    onClickConfirmListener.onCLick(true);
                 }
 
             }
@@ -68,7 +72,7 @@ public class DialogConfirmClearChatHistory extends BaseDialog {
 
     public interface OnClickConfirmListener
     {
-        void onCLick();
+        void onCLick(boolean isConfirm);
     }
 
 }

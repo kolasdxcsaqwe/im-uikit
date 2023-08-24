@@ -2,6 +2,7 @@ package com.netease.yunxin.app.im.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -73,14 +74,15 @@ public abstract class OkhttpCallBack implements Callback {
     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
         if(!context.isDestroyed() && !context.isFinishing())
         {
-
+            String text=response.body().string();
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        String text=response.body().string();
+
                         if(text!=null && text.length()>0)
                         {
+                            Log.e("OkhttpCallBack",call.request().url()+" "+text);
                             JSONObject jsonObject=new JSONObject(text);
                             String code=jsonObject.optString("code","");
                             String msg=jsonObject.optString("msg","");

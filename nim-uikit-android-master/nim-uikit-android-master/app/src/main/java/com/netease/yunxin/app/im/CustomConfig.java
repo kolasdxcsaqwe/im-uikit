@@ -23,9 +23,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
 
-import com.google.zxing.client.android.Intents;
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.yunxin.kit.chatkit.ui.ChatKitClient;
 import com.netease.yunxin.kit.chatkit.ui.ChatUIConfig;
@@ -372,7 +369,7 @@ public class CustomConfig {
         LinearLayout.LayoutParams params = getParams(context);
         return new ContentListPopView.Item.Builder()
                 .configView(
-                        getView(context, com.netease.yunxin.kit.conversationkit.ui.R.string.add_friend, R.mipmap.icon_qr))
+                        getView(context, com.netease.yunxin.kit.conversationkit.ui.R.string.scan_qrcode, R.mipmap.icon_qr))
                 .configParams(params)
                 .configClickListener(new View.OnClickListener() {
                     @Override

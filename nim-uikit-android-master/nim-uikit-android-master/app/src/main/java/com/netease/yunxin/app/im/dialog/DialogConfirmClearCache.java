@@ -1,7 +1,6 @@
 package com.netease.yunxin.app.im.dialog;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.netease.yunxin.app.im.databinding.DialogReConfirmBinding;
-import com.netease.yunxin.kit.chatkit.ui.databinding.DialogChatHistoryCleanBinding;
-import com.netease.yunxin.kit.chatkit.ui.model.DeleteChatHistory;
 import com.netease.yunxin.kit.common.ui.dialog.BaseDialog;
 import com.netease.yunxin.kit.common.utils.ScreenUtils;
-import com.netease.yunxin.kit.corekit.event.EventCenter;
 
 public class DialogConfirmClearCache extends BaseDialog {
 
