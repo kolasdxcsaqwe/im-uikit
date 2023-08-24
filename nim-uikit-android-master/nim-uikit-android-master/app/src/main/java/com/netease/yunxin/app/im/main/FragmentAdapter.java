@@ -34,6 +34,10 @@ public class FragmentAdapter extends FragmentStateAdapter {
     this.fragmentList = fragmentList;
   }
 
+  public List<Fragment> getFragmentList() {
+    return fragmentList;
+  }
+
   @NonNull
   @Override
   public Fragment createFragment(int position) {

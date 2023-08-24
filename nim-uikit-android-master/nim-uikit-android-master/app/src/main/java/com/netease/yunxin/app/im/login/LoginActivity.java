@@ -198,28 +198,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    private void getUrl()
-    {
-        HttpRequest.get(HttpRequest.systemConfig, new OkhttpCallBack(false,this) {
-            @Override
-            public void onHttpFailure(@NonNull Call call, @NonNull IOException e) {
-
-            }
-
-            @Override
-            public void onHttpResponse(@NonNull Call call, @NonNull JSONObject jsonObject, boolean isSuccess, String msg) throws IOException {
-                if(isSuccess)
-                {
-                    SPUtils.getInstance().save(SPUtils.ConfigData,jsonObject.toString());
-                }
-                else
-                {
-                    ToastX.showShortToast(msg);
-                }
-            }
-        });
-    }
-
     private void getVersion()
     {
         HttpRequest.get(HttpRequest.systemVersion, new OkhttpCallBack(true,this) {
