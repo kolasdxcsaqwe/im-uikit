@@ -55,6 +55,7 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:background="#00000000"
                 android:textSize="15sp"
