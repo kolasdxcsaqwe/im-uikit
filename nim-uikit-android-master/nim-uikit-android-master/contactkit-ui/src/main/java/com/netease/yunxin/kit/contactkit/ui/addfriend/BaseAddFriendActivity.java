@@ -18,10 +18,15 @@ import com.netease.yunxin.kit.common.ui.activities.BaseActivity;
 import com.netease.yunxin.kit.common.ui.viewmodel.FetchResult;
 import com.netease.yunxin.kit.common.ui.viewmodel.LoadStatus;
 import com.netease.yunxin.kit.contactkit.ui.R;
+import com.netease.yunxin.kit.contactkit.ui.utils.SPUtils;
 import com.netease.yunxin.kit.corekit.im.IMKitClient;
 import com.netease.yunxin.kit.corekit.im.model.UserInfo;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 public abstract class BaseAddFriendActivity extends BaseActivity {
@@ -33,6 +38,7 @@ public abstract class BaseAddFriendActivity extends BaseActivity {
   protected View ivAddFriendBack;
   protected View ivFriendClear;
   protected View addFriendEmptyLayout;
+  String plat;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +69,18 @@ public abstract class BaseAddFriendActivity extends BaseActivity {
             }
           }
         });
+
+    String detail= SPUtils.getInstance(this).get(SPUtils.ConfigData,"");
+    if(!TextUtils.isEmpty(detail))
+    {
+      try {
+        JSONObject jsonObject=new JSONObject(detail);
+        plat=jsonObject.optString("plat","");
+      } catch (JSONException e) {
+        throw new RuntimeException(e);
+      }
+
+    }
   }
 
   protected abstract View initViewAndGetRootView(Bundle savedInstanceState);
@@ -80,7 +98,21 @@ public abstract class BaseAddFriendActivity extends BaseActivity {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
           String accountId = v.getEditableText().toString();
           if (!TextUtils.isEmpty(accountId)) {
-            viewModel.fetchUser(accountId);
+            if(!TextUtils.isEmpty(plat))
+            {
+              if(accountId.startsWith(plat))
+              {
+                viewModel.fetchUser(accountId);
+              }
+              else
+              {
+                showEmptyView(true);
+              }
+            }
+            else
+            {
+              viewModel.fetchUser(accountId);
+            }
           }
         }
         return false;

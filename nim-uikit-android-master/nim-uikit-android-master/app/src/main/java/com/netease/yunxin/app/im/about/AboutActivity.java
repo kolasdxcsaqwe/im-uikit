@@ -10,23 +10,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityAboutBinding;
 import com.netease.yunxin.app.im.utils.AppUtils;
+import com.netease.yunxin.app.im.utils.SPUtils;
 import com.netease.yunxin.kit.common.ui.activities.BrowseActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AboutActivity extends AppCompatActivity {
 
   private ActivityAboutBinding viewBinding;
-  private final String productUrl = "https://netease.im/m/";
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     viewBinding = ActivityAboutBinding.inflate(getLayoutInflater());
     setContentView(viewBinding.getRoot());
-    viewBinding.flProduct.setOnClickListener(
-        v ->
-            BrowseActivity.Companion.launch(
-                AboutActivity.this, getString(R.string.mine_about), productUrl));
-    viewBinding.tvVersion.setText(AppUtils.getAppVersionName(this));
     viewBinding.aboutTitleBar.setOnBackIconClickListener(v -> onBackPressed());
+    viewBinding.aboutTitleBar.setTitle(getString(R.string.mine_about));
+    String detail=SPUtils.getInstance().get(SPUtils.ConfigData,"");
+    try {
+      JSONObject jsonObject=new JSONObject(detail);
+      String content=jsonObject.optString("about","");
+      viewBinding.webView.loadData(content,"text/html; charset=UTF-8",null);
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 }

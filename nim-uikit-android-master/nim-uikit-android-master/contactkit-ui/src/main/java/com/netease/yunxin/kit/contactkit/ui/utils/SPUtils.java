@@ -12,6 +12,9 @@ public class SPUtils {
 
     public static final String loginData="loginData";
 
+    public static final String ConfigData="ConfigData";
+
+
     public static SPUtils getInstance(Context context) {
         if(spUtils==null)
         {

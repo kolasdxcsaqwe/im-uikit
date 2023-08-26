@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -24,10 +25,19 @@ import com.netease.yunxin.app.im.databinding.ActivityQrScannerBinding;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
+import com.netease.yunxin.app.im.utils.SPUtils;
+import com.netease.yunxin.kit.chatkit.repo.ContactRepo;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
+import com.netease.yunxin.kit.corekit.im.model.UserInfo;
+import com.netease.yunxin.kit.corekit.im.provider.FetchCallback;
 import com.netease.yunxin.kit.corekit.im.utils.RouterConstant;
 import com.netease.yunxin.kit.corekit.route.XKitRouter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class QrCaptureActivity extends BaseActivity implements
@@ -39,6 +49,8 @@ public class QrCaptureActivity extends BaseActivity implements
     private CaptureManager capture;
 
     private ViewfinderView viewfinderView;
+
+    String plat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,15 +73,41 @@ public class QrCaptureActivity extends BaseActivity implements
             @Override
             public void barcodeResult(BarcodeResult result) {
                 aqb.zxingBarcodeScanner.pause();
-                XKitRouter.withKey(RouterConstant.PATH_USER_INFO_PAGE).withParam(RouterConstant.KEY_ACCOUNT_ID_KEY,result.getResult().toString()).withContext(QrCaptureActivity.this).navigate();
-                finish();
+                String resultString=result.getResult().toString();
+                if(!TextUtils.isEmpty(plat))
+                {
+                    if(resultString.startsWith(plat))
+                    {
+                        search(resultString);
+                    }
+                    else
+                    {
+                        ToastX.showShortToast("搜索不到该用户");
+                        aqb.zxingBarcodeScanner.resume();
+                    }
+                }
+                else
+                {
+                    search(resultString);
+                }
             }
         });
 
         changeMaskColor(null);
         changeLaserVisibility(true);
-    }
 
+        String detail= SPUtils.getInstance().get(SPUtils.ConfigData,"");
+        if(!TextUtils.isEmpty(detail))
+        {
+            try {
+                JSONObject jsonObject=new JSONObject(detail);
+                plat=jsonObject.optString("plat","");
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
 
 
     @Override
@@ -136,4 +174,32 @@ public class QrCaptureActivity extends BaseActivity implements
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    private void search(String account)
+    {
+        List<String> accountList = new ArrayList<>();
+        accountList.add(account);
+        ContactRepo.fetchUserInfo(accountList, new FetchCallback<List<UserInfo>>() {
+            @Override
+            public void onSuccess(@Nullable List<UserInfo> userInfos) {
+                if(userInfos!=null && userInfos.size()>0)
+                {
+                    XKitRouter.withKey(RouterConstant.PATH_USER_INFO_PAGE).withParam(RouterConstant.KEY_ACCOUNT_ID_KEY,
+                            userInfos.get(0).getAccount()).withContext(QrCaptureActivity.this).navigate();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailed(int i) {
+                ToastX.showShortToast("搜索不到该用户");
+                finish();
+            }
+
+            @Override
+            public void onException(@Nullable Throwable throwable) {
+                ToastX.showShortToast("搜索不到该用户"+Log.getStackTraceString(throwable));
+                finish();
+            }
+        });
+    }
 }
