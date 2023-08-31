@@ -89,9 +89,9 @@ public abstract class OkhttpCallBack implements Callback {
                             onHttpResponse(call,jsonObject,code.equals("0"),msg);
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                       e.printStackTrace();
                     }
                     catch (Exception exception)
                     {

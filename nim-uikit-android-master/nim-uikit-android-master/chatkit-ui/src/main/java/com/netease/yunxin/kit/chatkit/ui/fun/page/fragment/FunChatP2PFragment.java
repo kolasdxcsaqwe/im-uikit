@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.netease.nimlib.sdk.auth.OnlineClient;
 import com.netease.nimlib.sdk.event.EventSubscribeServiceObserver;
 import com.netease.nimlib.sdk.event.model.Event;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
@@ -93,6 +97,7 @@ public class FunChatP2PFragment extends FunChatFragment {
     anchorMessage = (IMMessage) bundle.getSerializable(RouterConstant.KEY_MESSAGE);
     refreshView();
     EventCenter.registerEventNotify(closeEventNotify);
+
 
     NIMClient.getService(EventSubscribeServiceObserver.class).observeEventChanged(new com.netease.nimlib.sdk.Observer<List<Event>>() {
       @Override
